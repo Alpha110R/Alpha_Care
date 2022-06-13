@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/home_page"
+        android:icon="@drawable/ic_home_empty"
+        android:title="Home"/>
+    <item
+        android:id="@+id/petProfile_page"
+        android:icon="@drawable/ic_paws_full"
+        android:title="Pet Profile"/>
+    <item
+        android:id="@+id/veterinarian_page"
+        android:icon="@drawable/ic_health_empty"
+        android:title="Health" />
+</menu>
