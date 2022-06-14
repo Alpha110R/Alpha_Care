@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F9FFFA"
     tools:context=".PetProfileActivity">
 
     <LinearLayout
@@ -12,8 +13,8 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
         <ImageView
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_width="220dp"
+            android:layout_height="220dp"
             android:src="@drawable/img_dogplaceholder"
             android:layout_gravity="center"
             android:layout_marginTop="20dp" />
@@ -119,12 +120,17 @@
         </LinearLayout>
 
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/petProfile_LST_events"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/petprofile_event_card"
+            android:paddingTop="20dp"/>
 
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
+
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"
             android:layout_width="match_parent"

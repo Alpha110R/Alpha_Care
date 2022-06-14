@@ -9,7 +9,7 @@
         android:icon="@drawable/petprofile_selector_drawable"
         android:title="Pet Profile"/>
     <item
-        android:id="@+id/veterinarian_page"
+        android:id="@+id/health_page"
         android:icon="@drawable/health_selector_drawable"
         android:title="Health" />
 </menu>
