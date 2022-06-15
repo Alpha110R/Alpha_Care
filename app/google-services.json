@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "907052353806",
+    "project_id": "alpha-care-110",
+    "storage_bucket": "alpha-care-110.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:907052353806:android:4d4a7ea8f7b69475f9ef5f",
+        "android_client_info": {
+          "package_name": "com.alpha_care"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "907052353806-35fesnglcclf3f8d2pukg68ss84nbtni.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBz0Z2sw-51kRdJcSolJoSq5HMQyluYTbQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "907052353806-35fesnglcclf3f8d2pukg68ss84nbtni.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

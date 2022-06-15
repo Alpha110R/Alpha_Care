@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#F9FFFA"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/homePage_LST_pets"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/homepage_pet_card"
+            android:paddingTop="20dp"/>
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/homPage_bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:menu="@menu/bottom_navigation_menu"
+            app:itemTextColor="#235D3A"
+            app:itemIconSize="40dp"
+            android:textAlignment="center"
+            android:minHeight="70dp"
+            app:backgroundTint="#CBEAD1"
+            android:fontFamily="sans-serif-condensed-medium"
+            app:itemIconTint="@color/bottom_nav_color" />
+    </LinearLayout>
+</RelativeLayout>

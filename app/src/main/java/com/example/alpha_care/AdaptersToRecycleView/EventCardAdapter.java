@@ -1,12 +1,13 @@
-package com.example.alpha_care;
+package com.example.alpha_care.AdaptersToRecycleView;
 
-import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.alpha_care.Objects.PetEventCard;
+import com.example.alpha_care.R;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class EventCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.petprofile_event_card, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.petprofilepage_event_card, parent, false);
         EventCardHolder eventCardHolder = new EventCardHolder(view);
         return eventCardHolder;
     }
@@ -36,13 +37,13 @@ public class EventCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 /**
  * Connect to view
  */
-        holder.eventCard_LBL_contactName.setText(petEventCard.getMadeEventContact().getFirstName() + " " + petEventCard.getMadeEventContact().getLastName());
+        holder.eventCard_LBL_contactName.setText(petEventCard.getEventCardCreatorContact().getFirstName() + " " + petEventCard.getEventCardCreatorContact().getLastName());
         holder.eventCard_LBL_eventTime.setText(petEventCard.getDateExecution().toString());
     }
 
     @Override
     public int getItemCount() {
-        return petEventCardList.size();
+        return petEventCardList == null ? 0 : petEventCardList.size();
     }
 
     public PetEventCard getPetEventCard(int position){

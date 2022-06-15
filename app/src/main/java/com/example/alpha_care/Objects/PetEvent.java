@@ -1,17 +1,13 @@
-package com.example.alpha_care;
+package com.example.alpha_care.Objects;
+
+import com.example.alpha_care.Enums.PetEventType;
 
 import java.util.List;
 
-enum PetEventType {
-    WALK,
-    FOOD,
-    GROOM
-}
-
 public class PetEvent {
-    private PetEventType petEventType;
+    private PetEventType petEventType;//WALK, FOOD, GROOM -> KEY
     private int amount;
-    private List<PetEventCard> eventCardList;
+    private List<PetEventCard> eventCardList;//The events that the contacts made in a day.
 
     public PetEvent (){}
 
@@ -28,9 +24,12 @@ public class PetEvent {
         return amount;
     }
 
-    public PetEvent setAmount(int amount) {
+    private void setAmount(int amount) {
         this.amount = amount;
-        return this;
+    }
+
+    public void addAmount(int amount){
+        this.amount += amount;
     }
 
     public List<PetEventCard> getEventCardList() {
@@ -39,6 +38,7 @@ public class PetEvent {
 
     public PetEvent setEventCardList(List<PetEventCard> eventCardList) {
         this.eventCardList = eventCardList;
+        setAmount(eventCardList.size());
         return this;
     }
 }

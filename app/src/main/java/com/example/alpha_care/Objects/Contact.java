@@ -1,10 +1,14 @@
-package com.example.alpha_care;
+package com.example.alpha_care.Objects;
 
 public class Contact {
     private String firstName,
                    lastName,
-                   phoneNumber;
-    public Contact (){}
+                    UID;//equals to his user ID
+    public Contact (String UID){
+        this.UID = UID;
+    }
+
+    public String getUID(){return UID;}
 
     public String getFirstName() {
         return firstName;
@@ -24,13 +28,4 @@ public class Contact {
         return this;
     }
 
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public Contact setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-        return this;
-    }
 }

@@ -6,13 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F9FFFA"
-    tools:context=".PetProfileActivity">
+    tools:context=".Activities.PetProfileActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="220dp"
             android:layout_height="220dp"
             android:src="@drawable/img_dogplaceholder"
@@ -42,7 +42,7 @@
                 android:orientation="vertical"
                 android:gravity="center">
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_walk"
+                android:id="@+id/petProfile_FAB_walk"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:src="@drawable/ic_dogwalking_empty"
@@ -55,9 +55,10 @@
                 android:layout_weight="1"/>
 
                 <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/petProfile_LBL_amountWalk"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0/3"
+                    android:text="0/0"
                     android:textSize="20sp"
                     android:layout_gravity="center"
                     android:textColor="#235D3A"/>
@@ -71,7 +72,7 @@
                 android:orientation="vertical"
                 android:gravity="center">
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_food"
+                android:id="@+id/petProfile_FAB_food"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:src="@drawable/ic_dogbowl_empty"
@@ -83,9 +84,10 @@
                 app:elevation="10dp"
                 android:layout_weight="1" />
                 <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/petProfile_LBL_amountFood"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0/2"
+                    android:text="0/0"
                     android:textSize="20sp"
                     android:layout_gravity="center"
                     android:textColor="#235D3A"/>
@@ -99,7 +101,7 @@
                 android:orientation="vertical"
                 android:gravity="center">
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_groom"
+                android:id="@+id/petProfile_FAB_groom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_grooming_empty"
@@ -110,9 +112,10 @@
                 app:backgroundTint="#CBEAD1"
                 app:elevation="10dp"/>
                 <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/petProfile_LBL_amountGroomming"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0/1"
+                    android:text="0/0"
                     android:textSize="20sp"
                     android:layout_gravity="center"
                     android:textColor="#235D3A"/>
@@ -127,12 +130,12 @@
             android:layout_weight="1"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/petprofile_event_card"
+            tools:listitem="@layout/petprofilepage_event_card"
             android:paddingTop="20dp"/>
 
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_navigation"
+            android:id="@+id/petProfile_bottom_navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:menu="@menu/bottom_navigation_menu"
