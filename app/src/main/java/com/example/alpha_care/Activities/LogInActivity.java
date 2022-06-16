@@ -30,7 +30,7 @@ public class LogInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         findViews();
-        intent1 = new Intent(LogInActivity.this, HomeActivity.class);
+        intent1 = new Intent(LogInActivity.this, BasePage.class);
         bundle = new Bundle();
 
         authentication_BTN_signIn.setOnClickListener(view -> {

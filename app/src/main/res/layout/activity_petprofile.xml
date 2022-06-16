@@ -5,8 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F9FFFA"
-    tools:context=".Activities.PetProfileActivity">
+    android:background="#F9FFFA">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -133,18 +132,6 @@
             tools:listitem="@layout/petprofilepage_event_card"
             android:paddingTop="20dp"/>
 
-
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/petProfile_bottom_navigation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:menu="@menu/bottom_navigation_menu"
-            app:itemTextColor="#235D3A"
-            app:itemIconSize="40dp"
-            android:textAlignment="center"
-            android:minHeight="70dp"
-            app:backgroundTint="#CBEAD1"
-            app:itemIconTint="@color/bottom_nav_color" />
     </LinearLayout>
 
 

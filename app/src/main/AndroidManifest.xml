@@ -15,19 +15,13 @@
         android:supportsRtl="false"
         android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
         <activity
-            android:name=".Activities.PetProfileActivity"
-            android:exported="true"
-            android:screenOrientation="portrait">
-
-        </activity>
-        <activity
-            android:name=".Activities.HomeActivity"
-            android:exported="true"
-            android:screenOrientation="portrait">
-
-        </activity>
-        <activity
             android:name=".Activities.LogInActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
+
+        </activity>
+        <activity
+            android:name=".Activities.BasePage"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>

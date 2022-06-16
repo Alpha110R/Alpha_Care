@@ -20,17 +20,6 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/homepage_pet_card"
             android:paddingTop="20dp"/>
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/homPage_bottom_navigation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:menu="@menu/bottom_navigation_menu"
-            app:itemTextColor="#235D3A"
-            app:itemIconSize="40dp"
-            android:textAlignment="center"
-            android:minHeight="70dp"
-            app:backgroundTint="#CBEAD1"
-            android:fontFamily="sans-serif-condensed-medium"
-            app:itemIconTint="@color/bottom_nav_color" />
+
     </LinearLayout>
 </RelativeLayout>

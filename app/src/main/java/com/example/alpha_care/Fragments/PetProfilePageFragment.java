@@ -1,47 +1,53 @@
-package com.example.alpha_care.Activities;
+package com.example.alpha_care.Fragments;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Intent;
+import android.app.Activity;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
-import com.example.alpha_care.DataManager;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.alpha_care.AdaptersToRecycleView.EventCardAdapter;
+import com.example.alpha_care.DataManager;
+import com.example.alpha_care.Enums.PetEventType;
 import com.example.alpha_care.Enums.finals;
 import com.example.alpha_care.Objects.Pet;
 import com.example.alpha_care.Objects.PetEvent;
-import com.example.alpha_care.Enums.PetEventType;
 import com.example.alpha_care.R;
+import com.example.alpha_care.Utils.RequestContactReadPermission;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textview.MaterialTextView;
 
-public class PetProfileActivity extends AppCompatActivity {
+public class PetProfilePageFragment extends Fragment {
+
     private FloatingActionButton petProfile_FAB_walk, petProfile_FAB_food, petProfile_FAB_groom;
     private MaterialTextView petProfile_LBL_amountGroomming, petProfile_LBL_amountFood, petProfile_LBL_amountWalk;
     private RecyclerView recyclerView;
     private EventCardAdapter eventCardAdapter;
-    private BottomNavigationView petProfile_bottom_navigation;
     private Pet pet;
-    private Intent intent;
-    private Bundle bundle;//contains the userID of the current user
+    private Activity activity;
+    public PetProfilePageFragment (Activity activity){
+        this.activity = activity;
+    }
+
+    public PetProfilePageFragment setPetToShow(Pet pet){
+        this.pet = pet;
+        return this;
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_petprofile);
-        findViews();
-        intent = getIntent();
-        bundle = intent.getBundleExtra(finals.BUNDLE.toString());
-        pet = DataManager.generatePet();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View fragmentView = inflater.inflate(R.layout.activity_petprofile, container, false);
+
+        findViews(fragmentView);
         initializeAmountsOfEvents();
         restartPetEventCardAdapterToListView();
-
 
         petProfile_FAB_walk.setOnClickListener(view -> {
             petProfile_FAB_walk.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#397D54")));
@@ -64,15 +70,14 @@ public class PetProfileActivity extends AppCompatActivity {
             recyclerView.getAdapter().notifyDataSetChanged();
 
         });
-        petProfile_bottom_navigation.setOnItemSelectedListener(item -> {
-            bottomNavigationClickItem(item);
-            return true;
-        });
+
+
+        return fragmentView;
     }
 
     private void initializeAmountsOfEvents() {
         for (PetEvent event:
-             pet.getPetEvents()) {
+                pet.getPetEvents()) {
             switch (event.getPetEventType()) {
                 case WALK:
                     petProfile_LBL_amountWalk.setText("0/" + event.getAmount());
@@ -87,38 +92,15 @@ public class PetProfileActivity extends AppCompatActivity {
         }
     }
 
-    private void findViews() {
-        petProfile_FAB_walk = findViewById(R.id.petProfile_FAB_walk);
-        petProfile_FAB_food = findViewById(R.id.petProfile_FAB_food);
-        petProfile_FAB_groom = findViewById(R.id.petProfile_FAB_groom);
-        recyclerView = findViewById(R.id.petProfile_LST_events);
-        petProfile_bottom_navigation = findViewById(R.id.petProfile_bottom_navigation);
-        petProfile_LBL_amountGroomming = findViewById(R.id.petProfile_LBL_amountGroomming);
-        petProfile_LBL_amountFood = findViewById(R.id.petProfile_LBL_amountFood);
-        petProfile_LBL_amountWalk = findViewById(R.id.petProfile_LBL_amountWalk);
+    private void findViews(View fragmentView) {
+        petProfile_FAB_walk = fragmentView.findViewById(R.id.petProfile_FAB_walk);
+        petProfile_FAB_food = fragmentView.findViewById(R.id.petProfile_FAB_food);
+        petProfile_FAB_groom = fragmentView.findViewById(R.id.petProfile_FAB_groom);
+        recyclerView = fragmentView.findViewById(R.id.petProfile_LST_events);
+        petProfile_LBL_amountGroomming = fragmentView.findViewById(R.id.petProfile_LBL_amountGroomming);
+        petProfile_LBL_amountFood = fragmentView.findViewById(R.id.petProfile_LBL_amountFood);
+        petProfile_LBL_amountWalk = fragmentView.findViewById(R.id.petProfile_LBL_amountWalk);
 
-    }
-    private void bottomNavigationClickItem(MenuItem item){
-        switch (item.getItemId()) {
-            case R.id.home_page:
-
-            case R.id.health_page:
-
-
-            case R.id.petProfile_page:
-                Log.d("tagg", item.toString());
-                break;
-        }
-    }
-    private void changeColor(int itemId){
-        switch (itemId) {
-            case R.id.home_page:
-
-            case R.id.health_page:
-
-            case R.id.petProfile_page:
-                break;
-        }
     }
 
     public void restartPetEventCardAdapterToListView(){

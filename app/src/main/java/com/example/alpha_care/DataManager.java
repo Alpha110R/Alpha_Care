@@ -52,7 +52,10 @@ public class DataManager {
     }
     public static User generateUser(){
         Map<String,Pet> map = new HashMap<>();
-        map.put("a",generatePet());
-        return new User("").setMyPets(map);
+        Pet pet = generatePet();
+        Pet pet1 = generatePet();
+        map.put(pet.getUID(),pet);
+        map.put(pet.getUID(),pet1);
+        return new User("1").setMyPets(map);
     }
 }
