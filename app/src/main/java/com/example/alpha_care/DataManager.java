@@ -6,6 +6,8 @@ import com.example.alpha_care.Objects.Pet;
 import com.example.alpha_care.Objects.PetEvent;
 import com.example.alpha_care.Objects.PetEventCard;
 import com.example.alpha_care.Objects.User;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,6 +15,12 @@ import java.util.List;
 import java.util.Map;
 
 public class DataManager {
+
+    public void data(){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference cities = db.collection("cities");
+        CollectionReference users = db.collection("users");
+    }
 
     public static Pet generatePet(){
         Pet pet = new Pet();

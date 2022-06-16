@@ -78,7 +78,7 @@ public class RequestContactReadPermission {
 
     public void requestPermission(String permission){
         if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)){
-            Toast.makeText(activity, "Read contacts permission allows us to read your contacts. Please allow it for additional functionality.", Toast.LENGTH_LONG).show();
+            //Toast.makeText(activity, "Read contacts permission allows us to read your contacts. Please allow it for additional functionality.", Toast.LENGTH_LONG).show();
         }
         ActivityCompat.requestPermissions(activity, new String[]{permission},PERMISSION_REQUEST_CODE);
     }

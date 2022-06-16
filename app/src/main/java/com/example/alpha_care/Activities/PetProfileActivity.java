@@ -3,6 +3,7 @@ package com.example.alpha_care.Activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.MenuItem;
 
 import com.example.alpha_care.DataManager;
 import com.example.alpha_care.AdaptersToRecycleView.EventCardAdapter;
+import com.example.alpha_care.Enums.finals;
 import com.example.alpha_care.Objects.Pet;
 import com.example.alpha_care.Objects.PetEvent;
 import com.example.alpha_care.Enums.PetEventType;
@@ -26,15 +28,20 @@ public class PetProfileActivity extends AppCompatActivity {
     private EventCardAdapter eventCardAdapter;
     private BottomNavigationView petProfile_bottom_navigation;
     private Pet pet;
+    private Intent intent;
+    private Bundle bundle;//contains the userID of the current user
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_petprofile);
         findViews();
+        intent = getIntent();
+        bundle = intent.getBundleExtra(finals.BUNDLE.toString());
         pet = DataManager.generatePet();
         initializeAmountsOfEvents();
         restartPetEventCardAdapterToListView();
+
 
         petProfile_FAB_walk.setOnClickListener(view -> {
             petProfile_FAB_walk.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#397D54")));
@@ -97,8 +104,19 @@ public class PetProfileActivity extends AppCompatActivity {
 
             case R.id.health_page:
 
+
             case R.id.petProfile_page:
                 Log.d("tagg", item.toString());
+                break;
+        }
+    }
+    private void changeColor(int itemId){
+        switch (itemId) {
+            case R.id.home_page:
+
+            case R.id.health_page:
+
+            case R.id.petProfile_page:
                 break;
         }
     }

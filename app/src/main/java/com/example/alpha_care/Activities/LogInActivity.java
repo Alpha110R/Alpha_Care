@@ -1,87 +1,41 @@
 package com.example.alpha_care.Activities;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
-
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.alpha_care.CallBacks.CallBack_ContactPermission;
-import com.example.alpha_care.Objects.User;
+import com.example.alpha_care.Enums.finals;
 import com.example.alpha_care.R;
-import com.example.alpha_care.Utils.RequestContactReadPermission;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
-public class AuthenticationActivity extends AppCompatActivity {
-    private static final int PERMISSION_REQUEST_CODE = 1;
-
-    private MaterialButton authentication_BTN_signIn, authentication_BTN_user;
-    private MaterialTextView authentication_LBL_info;
-    private User appUser;
+public class LogInActivity extends AppCompatActivity {
+    private MaterialButton authentication_BTN_signIn;
     private FirebaseAuth mAuth;
-    private RequestContactReadPermission requestContactReadPermission;
-    private Map<String, String> contacts = null;
-
+    private FirebaseUser user;
+    private Intent intent1;
+    private Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_authentication);
+        setContentView(R.layout.activity_login);
         findViews();
-        requestContactReadPermission = new RequestContactReadPermission(this);
-        mAuth = FirebaseAuth.getInstance();
-// Initialize Firebase Auth
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CollectionReference cities = db.collection("cities");
-        CollectionReference users = db.collection("users");
+        intent1 = new Intent(LogInActivity.this, HomeActivity.class);
+        bundle = new Bundle();
 
         authentication_BTN_signIn.setOnClickListener(view -> {
-            FirebaseUser user = mAuth.getCurrentUser();
-            String str="";
-            if(user !=null){
-                appUser = new User(user.getUid()).setPhoneNumber(user.getPhoneNumber());
-                users.document(appUser.getPhoneNumber()).set(appUser);
-                str += "\n" + user.getUid();
-                str += "\n" + user.getDisplayName();
-                str += "\n" + user.getPhoneNumber();
-            }else{
-                SignIn();
-            }
-            authentication_LBL_info.setText(str);
+            SignIn();
         });
-        authentication_BTN_user.setOnClickListener(view -> {
-            updateUI();
-            Log.d("tagg", contacts.get("+972526883505") +"");
-        });
-
-
-        if(!requestContactReadPermission.checkPermission(requestContactReadPermission.getWantPermission()))
-            setPopUpValidation().show();
-        else {
-            if (contacts == null) {
-                contacts = requestContactReadPermission.readContacts();
-                Log.d("tagg", contacts.get("+972526883505") + "");
-                Log.d("tagg", contacts.get("+972504082919") + "");
-                Log.d("tagg", contacts.get("+089736211") + "");
-            }
-        }
     }
 
     private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
@@ -101,8 +55,6 @@ public class AuthenticationActivity extends AppCompatActivity {
 
     private void findViews() {
         authentication_BTN_signIn = findViewById(R.id.authentication_BTN_signIn);
-        authentication_LBL_info = findViewById(R.id.authentication_LBL_info);
-        authentication_BTN_user = findViewById(R.id.authentication_BTN_user);
     }
 
     private void SignIn(){
@@ -115,50 +67,24 @@ public class AuthenticationActivity extends AppCompatActivity {
                 .createSignInIntentBuilder()
                 .setAvailableProviders(providers)
                 .setTosAndPrivacyPolicyUrls("https://firebase.google.com/docs/auth/android/firebaseui","")
+                .setLogo(R.drawable.ic_icon_popup_contact_permission)
                 .build();
         signInLauncher.launch(signInIntent);
     }
 
-    private void updateUI() {
-        FirebaseUser user = mAuth.getCurrentUser();
-        String str = "User\n";
-        if(user !=null){
-            str += "\n" + user.getUid();
-            str += "\n" + user.getDisplayName();
-            str += "\n" + user.getPhoneNumber();
-        }
-        authentication_LBL_info.setText(str);
-    }
-
-    public MaterialAlertDialogBuilder setPopUpValidation(){
-        MaterialAlertDialogBuilder selectGameScreen = new MaterialAlertDialogBuilder(this)
-                .setTitle("Contacts Permission")
-                .setIcon(R.drawable.ic_icon_popup_contact_permission)
-                .setMessage("HI\nWe need your Contact Permission to connect you with your partners." +
-                        "\nEnjoy!")
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        requestContactReadPermission.requestPermission(requestContactReadPermission.getWantPermission());
-                    }
-                });
-        return selectGameScreen;
-    }
-
-    //What makes the permission massage responsive and jump again after click no
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case PERMISSION_REQUEST_CODE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    contacts = requestContactReadPermission.readContacts();
-                } else {
-                    requestContactReadPermission.requestPermission(requestContactReadPermission.getWantPermission());
-                }
-                break;
+    protected void onStart () {
+        super.onStart();
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+        if(user!=null){
+            bundle.putString(finals.USER_ID.toString(), user.getUid());
+            intent1.putExtra(finals.BUNDLE.toString(), bundle);
+            startActivity(intent1);
+            finish();
         }
     }
+
 
 }
 
@@ -178,7 +104,7 @@ public class AuthenticationActivity extends AppCompatActivity {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("tagg", "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(AuthenticationActivity.this, "Authentication failed.",
+                            Toast.makeText(LogInActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                             updateUI();
                         }
