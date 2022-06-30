@@ -1,31 +1,31 @@
 package com.example.alpha_care.Objects;
 
 public class Contact {
-    private String firstName,
-                   lastName,
-                    UID;//equals to his user ID
-    public Contact (String UID){
-        this.UID = UID;
+    private String name,
+                   userID,//equals to his user ID KEY
+                   phoneNumber;
+    public Contact (){}
+    public Contact (String userID){
+        this.userID = userID;
     }
 
-    public String getUID(){return UID;}
+    public String getUserID(){return userID;}
 
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
-    public Contact setFirstName(String firstName) {
-        this.firstName = firstName;
+    public Contact setName(String name) {
+        this.name = name;
         return this;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public Contact setLastName(String lastName) {
-        this.lastName = lastName;
+    public Contact setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
         return this;
     }
-
 }

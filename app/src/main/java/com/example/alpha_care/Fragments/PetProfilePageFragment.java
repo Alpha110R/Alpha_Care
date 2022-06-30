@@ -12,14 +12,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.alpha_care.AdaptersToRecycleView.EventCardAdapter;
-import com.example.alpha_care.DataManager;
-import com.example.alpha_care.Enums.PetEventType;
-import com.example.alpha_care.Enums.finals;
+import com.example.alpha_care.Enums.EnumPetEventType;
 import com.example.alpha_care.Objects.Pet;
 import com.example.alpha_care.Objects.PetEvent;
 import com.example.alpha_care.R;
-import com.example.alpha_care.Utils.RequestContactReadPermission;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -52,21 +48,21 @@ public class PetProfilePageFragment extends Fragment {
         petProfile_FAB_walk.setOnClickListener(view -> {
             petProfile_FAB_walk.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#397D54")));
             petProfile_FAB_walk.setImageTintList(ColorStateList.valueOf(Color.parseColor("#73CD88")));
-            eventCardAdapter.setPetEventCardList(pet.getPetEventCardByType(PetEventType.WALK));
+            eventCardAdapter.setPetEventCardList(pet.getPetEventCardByType(EnumPetEventType.WALK));
             recyclerView.getAdapter().notifyDataSetChanged();
 
         });
         petProfile_FAB_food.setOnClickListener(view -> {
             petProfile_FAB_food.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#397D54")));
             petProfile_FAB_food.setImageTintList(ColorStateList.valueOf(Color.parseColor("#73CD88")));
-            eventCardAdapter.setPetEventCardList(pet.getPetEventCardByType(PetEventType.FOOD));
+            eventCardAdapter.setPetEventCardList(pet.getPetEventCardByType(EnumPetEventType.FOOD));
             recyclerView.getAdapter().notifyDataSetChanged();
 
         });
         petProfile_FAB_groom.setOnClickListener(view -> {
             petProfile_FAB_groom.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#397D54")));
             petProfile_FAB_groom.setImageTintList(ColorStateList.valueOf(Color.parseColor("#73CD88")));
-            eventCardAdapter.setPetEventCardList(pet.getPetEventCardByType(PetEventType.GROOM));
+            eventCardAdapter.setPetEventCardList(pet.getPetEventCardByType(EnumPetEventType.GROOM));
             recyclerView.getAdapter().notifyDataSetChanged();
 
         });
@@ -77,8 +73,8 @@ public class PetProfilePageFragment extends Fragment {
 
     private void initializeAmountsOfEvents() {
         for (PetEvent event:
-                pet.getPetEvents()) {
-            switch (event.getPetEventType()) {
+                pet.getPetEvents().values()) {
+            switch (event.getEnumPetEventType()) {
                 case WALK:
                     petProfile_LBL_amountWalk.setText("0/" + event.getAmount());
                     break;
@@ -105,7 +101,7 @@ public class PetProfilePageFragment extends Fragment {
 
     public void restartPetEventCardAdapterToListView(){
         eventCardAdapter = new EventCardAdapter();
-        eventCardAdapter.setPetEventCardList(pet.getPetEventCardByType(PetEventType.FOOD));
+        eventCardAdapter.setPetEventCardList(pet.getPetEventCardByType(EnumPetEventType.FOOD));
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(eventCardAdapter);
     }

@@ -21,8 +21,8 @@ public class PetCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private List<Pet> petCardList;
     private CallBack_PetCard callBack_petCard;
     public PetCardAdapter (){}
-    public PetCardAdapter setPetCardList(Map<String, Pet> petCardList){
-        this.petCardList = convertMapToList(petCardList);
+    public PetCardAdapter setPetCardList(List<Pet> petCardList){
+        this.petCardList = petCardList;
         return this;
     }
 
@@ -73,17 +73,11 @@ public class PetCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 @Override
                 public void onClick(View view) {
                     if (callBack_petCard != null) {
-                        Log.d("tagg", "pet clicked recycleView: " + getPet(getAdapterPosition()).getName());
                         callBack_petCard.clicked(getPet(getAdapterPosition()));
                     }
                 }
             });
         }
-    }
-
-    //Convert Map to List to show the pets in the recycleView
-    public List<Pet> convertMapToList(Map<String, Pet> petCardList){
-        return new ArrayList<Pet>(petCardList.values());
     }
 
 }

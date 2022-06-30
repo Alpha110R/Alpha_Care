@@ -1,22 +1,27 @@
 package com.example.alpha_care.Objects;
 
-import com.example.alpha_care.Enums.PetEventType;
+import com.example.alpha_care.Enums.EnumPetEventType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PetEvent {
-    private PetEventType petEventType;//WALK, FOOD, GROOM -> KEY
+    private EnumPetEventType enumPetEventType;//WALK, FOOD, GROOM -> KEY
     private int amount;
-    private List<PetEventCard> eventCardList;//The events that the contacts made in a day.
+    //private Map<String,PetEventCard> petEventCardMap;//<eventCardID, petEventCard> The events that the contacts made in a day.
+    private List<PetEventCard> petEventCardList;//<eventCardID, petEventCard> The events that the contacts made in a day.
 
-    public PetEvent (){}
-
-    public PetEventType getPetEventType() {
-        return petEventType;
+    public PetEvent (){
+        amount =0;
+        petEventCardList = new ArrayList<>();
     }
 
-    public PetEvent setPetEventType(PetEventType petEventType) {
-        this.petEventType = petEventType;
+    public EnumPetEventType getEnumPetEventType() {
+        return enumPetEventType;
+    }
+
+    public PetEvent setEnumPetEventType(EnumPetEventType enumPetEventType) {
+        this.enumPetEventType = enumPetEventType;
         return this;
     }
 
@@ -32,13 +37,17 @@ public class PetEvent {
         this.amount += amount;
     }
 
-    public List<PetEventCard> getEventCardList() {
-        return eventCardList;
+    public List<PetEventCard> getPetEventCardList() {
+        return petEventCardList;
     }
 
-    public PetEvent setEventCardList(List<PetEventCard> eventCardList) {
-        this.eventCardList = eventCardList;
-        setAmount(eventCardList.size());
+    public PetEvent setPetEventCardList(List<PetEventCard> petEventCardMap) {
+        this.petEventCardList = petEventCardMap;
+        setAmount(petEventCardMap.size());
         return this;
+    }
+
+    public void addEventCard(PetEventCard petEventCard){
+        petEventCardList.add(petEventCard);
     }
 }

@@ -6,10 +6,13 @@ import android.widget.Toast;
 public class MessagesToUser {
     private Context appContext;
     private static MessagesToUser me;
+
     public MessagesToUser(){}
+
     private MessagesToUser(Context appContext){
         this.appContext = appContext;
     }
+
     public static void initMessagesToUser(Context appContext){
         if(me == null)
             me = new MessagesToUser(appContext.getApplicationContext());

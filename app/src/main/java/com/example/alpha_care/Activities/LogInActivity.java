@@ -6,14 +6,19 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.alpha_care.Enums.finals;
+import com.example.alpha_care.CallBacks.CallBack_getFromRepository;
+import com.example.alpha_care.Enums.EnumFinals;
+import com.example.alpha_care.Objects.Pet;
+import com.example.alpha_care.Objects.User;
 import com.example.alpha_care.R;
+import com.example.alpha_care.Repository;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.gson.Gson;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,16 +27,17 @@ public class LogInActivity extends AppCompatActivity {
     private MaterialButton authentication_BTN_signIn;
     private FirebaseAuth mAuth;
     private FirebaseUser user;
-    private Intent intent1;
     private Bundle bundle;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         findViews();
-        intent1 = new Intent(LogInActivity.this, BasePage.class);
+        intent = new Intent(LogInActivity.this, PetsListActivity.class);
         bundle = new Bundle();
+        Repository.getMe().setCallBack_getFromRepository(callBack_getFromRepository);
 
         authentication_BTN_signIn.setOnClickListener(view -> {
             SignIn();
@@ -75,17 +81,42 @@ public class LogInActivity extends AppCompatActivity {
     @Override
     protected void onStart () {
         super.onStart();
+    }
+
+    @Override
+    protected void onResume () {
+        super.onResume();
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         if(user!=null){
-            bundle.putString(finals.USER_ID.toString(), user.getUid());
-            intent1.putExtra(finals.BUNDLE.toString(), bundle);
-            startActivity(intent1);
-            finish();
+            Repository.getMe().getUserByID(user.getUid());
         }
     }
 
+    private CallBack_getFromRepository callBack_getFromRepository = new CallBack_getFromRepository() {
+        @Override
+        public void getUser( User returnUser) {
+            if(returnUser!=null) {
+                bundle.putString(EnumFinals.USER.toString(), new Gson().toJson(returnUser));
+                Log.d("tagg", "LogIn NOT NULL user: " + returnUser.getUID() + " phone: " + returnUser.getPhoneNumber());
+            }
+            else{
+                User newUser = new User(user.getUid()).setPhoneNumber(user.getPhoneNumber());
+                Repository.getMe().insertToDataBase(newUser);
+                bundle.putString(EnumFinals.USER.toString(), new Gson().toJson(newUser));
+                Log.d("tagg", "LogIn NULL user: " + returnUser.getUID() + " phone: " + returnUser.getPhoneNumber());
+            }
+            intent.putExtra("LOGIN", 1);
+            intent.putExtra(EnumFinals.BUNDLE.toString(), bundle);
+            startActivity(intent);
+            finish();
+        }
 
+        @Override
+        public void getPet(Pet returnPet) {
+
+        }
+    };
 }
 
 

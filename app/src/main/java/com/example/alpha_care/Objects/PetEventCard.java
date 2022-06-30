@@ -6,11 +6,11 @@ import java.util.UUID;
 
 public class PetEventCard {
     private Contact eventCardCreatorContact;
-    private String dateExecution, UID;
+    private String dateExecution, petEventCardID;
 
     public PetEventCard(){
         this.dateExecution = new SimpleDateFormat("HH:mm", Locale.US).format(System.currentTimeMillis());
-        this.UID = UUID.randomUUID().toString().replaceAll("-", "").toUpperCase();
+        this.petEventCardID = UUID.randomUUID().toString().replaceAll("-", "").toUpperCase();
     }
 
     public Contact getEventCardCreatorContact() {
@@ -24,5 +24,9 @@ public class PetEventCard {
 
     public String getDateExecution() {
         return dateExecution;
+    }
+
+    public String getPetEventCardID() {
+        return petEventCardID;
     }
 }

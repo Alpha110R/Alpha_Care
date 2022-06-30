@@ -37,7 +37,7 @@ public class EventCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 /**
  * Connect to view
  */
-        holder.eventCard_LBL_contactName.setText(petEventCard.getEventCardCreatorContact().getFirstName() + " " + petEventCard.getEventCardCreatorContact().getLastName());
+        holder.eventCard_LBL_contactName.setText(petEventCard.getEventCardCreatorContact().getName());
         holder.eventCard_LBL_eventTime.setText(petEventCard.getDateExecution().toString());
     }
 

@@ -7,19 +7,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="#F9FFFA"
     >
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/homePage_LST_pets"
+            android:id="@+id/PetsListActivity_LST_pets"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="vertical"
+            android:paddingTop="20dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/homepage_pet_card"
-            android:paddingTop="20dp"/>
+            tools:listitem="@layout/homepage_pet_card" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/PetsListActivity_FAB_addPet"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="end"
+            android:layout_marginVertical="16dp"
+            android:src="@drawable/ic_addpet_empty"
+            app:backgroundTint="#CBEAD1"
+            app:elevation="10dp"
+            app:fabCustomSize="80dp"
+            app:maxImageSize="60dp"
+            app:tint="#397D54"
+            android:layout_marginEnd="20dp"/>
 
     </LinearLayout>
+
 </RelativeLayout>

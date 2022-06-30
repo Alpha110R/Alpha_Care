@@ -11,17 +11,27 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/petProfile_BTN_close"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/ic_close"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"/>
+
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/petProfile_IMG_petImage"
             android:layout_width="220dp"
             android:layout_height="220dp"
             android:src="@drawable/img_dogplaceholder"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp" />
+            android:layout_marginTop="20dp"/>
         <Space
             android:layout_width="0dp"
             android:layout_height="20dp"/>
 
         <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/petProfile_LBL_contacts"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Contacts"
@@ -121,7 +131,18 @@
             </LinearLayout>
         </LinearLayout>
 
-
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/petProfile_FAB_addEventCard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_plus"
+            app:tint="#397D54"
+            app:fabCustomSize="40dp"
+            app:maxImageSize="20dp"
+            android:layout_marginVertical="8dp"
+            app:backgroundTint="#CBEAD1"
+            app:elevation="10dp"
+            android:layout_gravity="end"/>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/petProfile_LST_events"
             android:layout_width="match_parent"
@@ -129,8 +150,7 @@
             android:layout_weight="1"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/petprofilepage_event_card"
-            android:paddingTop="20dp"/>
+            tools:listitem="@layout/petprofilepage_event_card" />
 
     </LinearLayout>
 

@@ -1,6 +1,6 @@
 package com.example.alpha_care.Enums;
 
-public enum UserType {
+public enum EnumUserType {
     CREATOR,
     PARTNER,
     VET
