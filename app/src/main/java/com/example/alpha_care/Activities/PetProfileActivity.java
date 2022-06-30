@@ -1,5 +1,6 @@
 package com.example.alpha_care.Activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -45,27 +46,21 @@ public class PetProfileActivity extends AppCompatActivity {
 
         petProfile_FAB_walk.setOnClickListener(view -> {
             enumPetEventTypeFlag = EnumPetEventType.WALK;
-            petProfile_FAB_walk.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#397D54")));
-            petProfile_FAB_walk.setImageTintList(ColorStateList.valueOf(Color.parseColor("#73CD88")));
+            changeButtonPressedStyle();
             eventCardAdapter.setPetEventCardList(pet.getPetEventCardByType(EnumPetEventType.WALK));
-            recyclerView.getAdapter().notifyDataSetChanged();
-
+            notifyDataChangeRecycleView();
         });
         petProfile_FAB_food.setOnClickListener(view -> {
             enumPetEventTypeFlag = EnumPetEventType.FOOD;
-            petProfile_FAB_food.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#397D54")));
-            petProfile_FAB_food.setImageTintList(ColorStateList.valueOf(Color.parseColor("#73CD88")));
+            changeButtonPressedStyle();
             eventCardAdapter.setPetEventCardList(pet.getPetEventCardByType(EnumPetEventType.FOOD));
-            recyclerView.getAdapter().notifyDataSetChanged();
-
+            notifyDataChangeRecycleView();
         });
         petProfile_FAB_groom.setOnClickListener(view -> {
             enumPetEventTypeFlag = EnumPetEventType.GROOM;
-            petProfile_FAB_groom.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#397D54")));
-            petProfile_FAB_groom.setImageTintList(ColorStateList.valueOf(Color.parseColor("#73CD88")));
+            changeButtonPressedStyle();
             eventCardAdapter.setPetEventCardList(pet.getPetEventCardByType(EnumPetEventType.GROOM));
-            recyclerView.getAdapter().notifyDataSetChanged();
-
+            notifyDataChangeRecycleView();
         });
 
         petProfile_BTN_close.setOnClickListener(view -> {
@@ -134,13 +129,37 @@ public class PetProfileActivity extends AppCompatActivity {
         eventCardAdapter = new EventCardAdapter();
         enumPetEventTypeFlag = EnumPetEventType.WALK;
         eventCardAdapter.setPetEventCardList(pet.getPetEventCardByType(EnumPetEventType.WALK));
+        changeButtonPressedStyle();
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(eventCardAdapter);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void notifyDataChangeRecycleView(){
         eventCardAdapter.notifyDataSetChanged();
-        Log.d("tagg", ""+ pet.getPetEventCardByType(EnumPetEventType.FOOD).get(0).getDateExecution());
+    }
 
+    private void changeButtonPressedStyle(){
+        petProfile_FAB_food.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#CBEAD1")));
+        petProfile_FAB_food.setImageTintList(ColorStateList.valueOf(Color.parseColor("#397D54")));
+        petProfile_FAB_walk.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#CBEAD1")));
+        petProfile_FAB_walk.setImageTintList(ColorStateList.valueOf(Color.parseColor("#397D54")));
+        petProfile_FAB_groom.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#CBEAD1")));
+        petProfile_FAB_groom.setImageTintList(ColorStateList.valueOf(Color.parseColor("#397D54")));
+
+        switch (enumPetEventTypeFlag){
+            case FOOD:
+                petProfile_FAB_food.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#397D54")));
+                petProfile_FAB_food.setImageTintList(ColorStateList.valueOf(Color.parseColor("#73CD88")));
+                break;
+            case WALK:
+                petProfile_FAB_walk.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#397D54")));
+                petProfile_FAB_walk.setImageTintList(ColorStateList.valueOf(Color.parseColor("#73CD88")));
+                break;
+            case GROOM:
+                petProfile_FAB_groom.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#397D54")));
+                petProfile_FAB_groom.setImageTintList(ColorStateList.valueOf(Color.parseColor("#73CD88")));
+                break;
+        }
     }
 }

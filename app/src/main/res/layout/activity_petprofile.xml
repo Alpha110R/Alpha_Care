@@ -150,7 +150,8 @@
             android:layout_weight="1"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/petprofilepage_event_card" />
+            tools:listitem="@layout/petprofilepage_event_card"
+            android:layout_marginTop="8dp"/>
 
     </LinearLayout>
 
