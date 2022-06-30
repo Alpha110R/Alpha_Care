@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.alpha_care.Enums.EnumPetEventType;
 import com.example.alpha_care.Objects.PetEventCard;
 import com.example.alpha_care.R;
 import com.google.android.material.textview.MaterialTextView;
@@ -19,7 +20,6 @@ public class EventCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     public EventCardAdapter setPetEventCardList(List<PetEventCard> petEventCardList) {
         this.petEventCardList = petEventCardList;
-
         return this;
     }
 

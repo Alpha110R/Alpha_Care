@@ -32,6 +32,7 @@ public class PetProfileActivity extends AppCompatActivity {
     private MaterialButton petProfile_BTN_close;
     private RecyclerView recyclerView;
     private EventCardAdapter eventCardAdapter;
+    private EnumPetEventType enumPetEventTypeFlag;
     private Pet pet;
 
     @Override
@@ -43,6 +44,7 @@ public class PetProfileActivity extends AppCompatActivity {
         findViews();
 
         petProfile_FAB_walk.setOnClickListener(view -> {
+            enumPetEventTypeFlag = EnumPetEventType.WALK;
             petProfile_FAB_walk.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#397D54")));
             petProfile_FAB_walk.setImageTintList(ColorStateList.valueOf(Color.parseColor("#73CD88")));
             eventCardAdapter.setPetEventCardList(pet.getPetEventCardByType(EnumPetEventType.WALK));
@@ -50,6 +52,7 @@ public class PetProfileActivity extends AppCompatActivity {
 
         });
         petProfile_FAB_food.setOnClickListener(view -> {
+            enumPetEventTypeFlag = EnumPetEventType.FOOD;
             petProfile_FAB_food.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#397D54")));
             petProfile_FAB_food.setImageTintList(ColorStateList.valueOf(Color.parseColor("#73CD88")));
             eventCardAdapter.setPetEventCardList(pet.getPetEventCardByType(EnumPetEventType.FOOD));
@@ -57,6 +60,7 @@ public class PetProfileActivity extends AppCompatActivity {
 
         });
         petProfile_FAB_groom.setOnClickListener(view -> {
+            enumPetEventTypeFlag = EnumPetEventType.GROOM;
             petProfile_FAB_groom.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#397D54")));
             petProfile_FAB_groom.setImageTintList(ColorStateList.valueOf(Color.parseColor("#73CD88")));
             eventCardAdapter.setPetEventCardList(pet.getPetEventCardByType(EnumPetEventType.GROOM));
@@ -69,7 +73,7 @@ public class PetProfileActivity extends AppCompatActivity {
         });
 
         petProfile_FAB_addEventCard.setOnClickListener(view -> {
-            pet.addEventCard(EnumPetEventType.FOOD, "ALON");
+            pet.addEventCard(enumPetEventTypeFlag, "ALON");
             Repository.getMe().updatePetByNewEventCard(this, pet);
 
         });
@@ -128,14 +132,15 @@ public class PetProfileActivity extends AppCompatActivity {
 
     private void restartPetEventCardAdapterToListView(){
         eventCardAdapter = new EventCardAdapter();
-        setListToRecycleView();
+        enumPetEventTypeFlag = EnumPetEventType.WALK;
+        eventCardAdapter.setPetEventCardList(pet.getPetEventCardByType(EnumPetEventType.WALK));
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(eventCardAdapter);
     }
 
-    public void setListToRecycleView(){
-        eventCardAdapter.setPetEventCardList(pet.getPetEventCardByType(EnumPetEventType.FOOD));
-        Log.d("tagg", ""+ pet.getPetEventCardByType(EnumPetEventType.FOOD).toString());
+    public void notifyDataChangeRecycleView(){
+        eventCardAdapter.notifyDataSetChanged();
+        Log.d("tagg", ""+ pet.getPetEventCardByType(EnumPetEventType.FOOD).get(0).getDateExecution());
 
     }
 }

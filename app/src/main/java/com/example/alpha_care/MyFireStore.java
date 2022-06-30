@@ -5,14 +5,11 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.example.alpha_care.Activities.AddPetToUserActivity;
 import com.example.alpha_care.Activities.PetProfileActivity;
 import com.example.alpha_care.Activities.PetsListActivity;
 import com.example.alpha_care.CallBacks.CallBack_getFromDB;
-import com.example.alpha_care.Enums.EnumFinals;
-import com.example.alpha_care.Fragments.HomePageFragment;
 import com.example.alpha_care.Objects.Pet;
 import com.example.alpha_care.Objects.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,12 +23,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MyFireStore {
     private CollectionReference usersByID, usersByPhoneNumber, petsByID, petsByUserID;
@@ -182,7 +173,7 @@ public class MyFireStore {
             @Override
             public void onSuccess(Void unused) {
                 if(activity instanceof PetProfileActivity){
-                    ((PetProfileActivity) activity).setListToRecycleView();
+                    ((PetProfileActivity) activity).notifyDataChangeRecycleView();
                 }
             }
         });
