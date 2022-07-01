@@ -1,9 +1,6 @@
 package com.example.alpha_care.Objects;
 
-import androidx.appcompat.widget.AppCompatImageView;
-
 import com.example.alpha_care.Enums.EnumPetEventType;
-import com.example.alpha_care.Repository;
 
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +8,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class Pet {
-    private AppCompatImageView petImage;
+    private String petImageUrl;
     private Map<String, String> myContacts;//<userID, phoneNumber (of userID)> List of userID that represent the partners. show the names of the contact with this userID, if not exist -> show from the collectionByPhoneNumber
     private Map<String,PetEvent> petEvents;//<EnumPetEventType.tostring(), PetEvent> Presents the events categories like: Walk, Food, Groom
     private String name, birthDayDate, petID;
@@ -27,12 +24,12 @@ public class Pet {
 
     public String getPetID(){return petID;}
 
-    public AppCompatImageView getPetImage() {
-        return petImage;
+    public String getPetImageUrl() {
+        return petImageUrl;
     }
 
-    public Pet setPetImage(AppCompatImageView petImage) {
-        this.petImage = petImage;
+    public Pet setPetImageUrl(String petImageUrl) {
+        this.petImageUrl = petImageUrl;
         return this;
     }
 

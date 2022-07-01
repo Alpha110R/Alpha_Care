@@ -1,5 +1,6 @@
 package com.example.alpha_care.Activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -40,10 +41,19 @@ public class PetsListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pets_list);
         findViews();
         initializeIntentBundleAndUserID();
-        petCardAdapter = new PetCardAdapter();
         restartPetList();
 
+        intent = getIntent();
+        bundle = intent.getBundleExtra(EnumFinals.BUNDLE.toString());
+        String petID = bundle.getString(EnumFinals.PET_ID.toString());
+        if(petID != null && !currentUser.getMyPets().contains(petID)){
+            currentUser.addPetIDToUserPetList(petID);
+        }
+        Repository.getMe().getUserPets(currentUser.getMyPets(),this);
+
+
         restartPetCardAdapter();
+
         PetsListActivity_FAB_addPet.setOnClickListener(view -> {
             moveToPageWithBundle(AddPetToUserActivity.class);
         });
@@ -62,12 +72,14 @@ public class PetsListActivity extends AppCompatActivity {
     }
 
     private void restartPetCardAdapter(){
+        petCardAdapter = new PetCardAdapter();
         petCardAdapter.setPetCardList(petList).setCallBack_PetCard(callBack_petCard);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(petCardAdapter);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void addPetToList(Pet pet){
         petList.add(pet);
         petCardAdapter.notifyDataSetChanged();
@@ -83,14 +95,6 @@ public class PetsListActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         Log.d("tagg", "onStart");
-
-        intent = getIntent();
-        bundle = intent.getBundleExtra(EnumFinals.BUNDLE.toString());
-        String petID = bundle.getString(EnumFinals.PET_ID.toString());
-        if(petID != null && !currentUser.getMyPets().contains(petID)){
-            currentUser.addPetIDToUserPetList(petID);
-        }
-        Repository.getMe().getUserPets(currentUser.getMyPets(),this);
 
         Log.d("tagg", "my pets: " + currentUser.toString());
 

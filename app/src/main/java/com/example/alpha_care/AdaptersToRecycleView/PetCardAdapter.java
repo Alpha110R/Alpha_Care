@@ -12,6 +12,7 @@ import com.example.alpha_care.CallBacks.CallBack_PetCard;
 import com.example.alpha_care.Objects.Pet;
 import com.example.alpha_care.R;
 import com.google.android.material.textview.MaterialTextView;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +48,9 @@ public class PetCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
  */
         holder.homePage_LBL_petName.setText(pet.getName());
         holder.homePage_LBL_petAge.setText(pet.getAge()+"");
-        holder.homePage_IMG_petImage.setImageResource(R.drawable.ic_addpet_empty);
+        if(pet.getPetImageUrl() != null)
+            Picasso.get().load(pet.getPetImageUrl()).into(holder.homePage_IMG_petImage);
+        holder.homePage_IMG_petImage.setImageResource(R.drawable.img_dogplaceholder);
     }
 
     @Override

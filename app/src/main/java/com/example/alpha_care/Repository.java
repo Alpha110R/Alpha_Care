@@ -1,18 +1,22 @@
 package com.example.alpha_care;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.util.Log;
+import android.widget.ProgressBar;
 
 import com.example.alpha_care.CallBacks.CallBack_getFromDB;
 import com.example.alpha_care.CallBacks.CallBack_getFromRepository;
 import com.example.alpha_care.Objects.Pet;
 import com.example.alpha_care.Objects.User;
+import com.example.alpha_care.Utils.MyFireStorage;
 
 import java.util.List;
 
 public class Repository {
     public static Repository me;
     private MyFireStore myFireStore;
+    private MyFireStorage myFireStorage;
     private User user;
     private Pet pet;
     private CallBack_getFromRepository callBack_getFromRepository;
@@ -24,6 +28,7 @@ public class Repository {
     public Repository(){
         myFireStore = new MyFireStore();
         myFireStore.setCallBack_getFromDB(callBack_getFromDB);
+        myFireStorage = new MyFireStorage();
     }
 
     public static void initRepository(){
@@ -33,7 +38,6 @@ public class Repository {
     public static Repository getMe(){return me;}
 
     public void getUserByID(String userID){
-        Log.d("tagg", "userID repository: " + userID);
         myFireStore.getUserByID(userID);
     }
 
@@ -53,16 +57,6 @@ public class Repository {
                 myFireStore.upsertUserToDataBase((User)obj);
         }
     }
-
-    public void updateToDataBase(Object obj){
-        if(obj instanceof Pet)
-            myFireStore.upsertPetToDataBase((Pet)obj);
-        else{
-            if(obj instanceof User)
-                myFireStore.upsertUserToDataBase((User)obj);
-        }
-    }
-
     public void updatePetByNewEventCard(Activity activity, Pet pet){
         myFireStore.updatePetByNewEventCard(activity, pet);
     }
@@ -79,15 +73,9 @@ public class Repository {
         }
     }
 
-    /**
-     * Add PetID to the user petsID list and show the update in the recycleView
-     * @param activity
-     * @param pet
-     */
-    /*public void upsertPetToUserList(Activity activity, Pet pet){
-        myFireStore.upsertPetToUserDataBase(activity, pet);
-    }*/
-
+    public void uploadImageToStorage(Activity activity, Uri imageUri, ProgressBar progressBar){
+        myFireStorage.uploadFile(activity, imageUri, progressBar);
+    }
 
 
     private CallBack_getFromDB callBack_getFromDB = new CallBack_getFromDB() {

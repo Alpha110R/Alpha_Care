@@ -42,8 +42,11 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:30.1.0')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-firestore' //FireStore
-    implementation 'com.google.firebase:firebase-storage'
+    implementation 'com.google.firebase:firebase-storage' //FireStorage
     implementation 'com.google.firebase:firebase-auth'//Authentication
 
     implementation 'com.firebaseui:firebase-ui-auth:7.2.0'//Firebase-UI
+
+    implementation 'com.squareup.picasso:picasso:2.8'
+
 }

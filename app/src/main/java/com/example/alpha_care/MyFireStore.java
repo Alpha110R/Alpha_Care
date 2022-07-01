@@ -39,24 +39,6 @@ public class MyFireStore {
         petsByID = db.collection("petsByID");//All the pets in the application
         petsByUserID = db.collection("petsByUserID");
 
-        final DocumentReference docRef = petsByID.document("petsByID");
-        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot snapshot,
-                                @Nullable FirebaseFirestoreException e) {
-                if (e != null) {
-                    Log.w("tagg", "Listen failed.", e);
-                    return;
-                }
-
-                if (snapshot != null && snapshot.exists()) {
-                    Log.d("tagg", "Current data: " + snapshot.getData());
-                } else {
-                    Log.d("tagg", "Current data: null");
-                }
-            }
-        });
-
     }
     public void setCallBack_getFromDB(CallBack_getFromDB callBack_getFromDB){
         this.callBack_getFromDB = callBack_getFromDB;
@@ -89,7 +71,7 @@ public class MyFireStore {
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        Log.d("tagg", "getUserByID DocumentSnapshot data: " + documentSnapshot.getData());
+                        //Log.d("tagg", "getUserByID DocumentSnapshot data: " + documentSnapshot.getData());
                         returnUser = documentSnapshot.toObject(User.class);
                         callBack_getFromDB.getUser(returnUser);
                     }
@@ -102,7 +84,7 @@ public class MyFireStore {
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        Log.d("tagg", "getPetByID DocumentSnapshot data: " + documentSnapshot.getData());
+                        //Log.d("tagg", "getPetByID DocumentSnapshot data: " + documentSnapshot.getData());
                         pet = documentSnapshot.toObject(Pet.class);
                         if(activity instanceof PetProfileActivity){
                             ((PetProfileActivity) activity).initializePet(pet);
@@ -224,7 +206,7 @@ public class MyFireStore {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
-                                Log.d("tagg", "getPetByID DocumentSnapshot data: " + document.getData());
+                                //Log.d("tagg", "getPetByID DocumentSnapshot data: " + document.getData());
                                 pet = document.toObject(Pet.class);
                                 if(activity instanceof PetsListActivity){
                                     ((PetsListActivity) activity).addPetToList(pet);

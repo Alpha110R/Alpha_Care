@@ -19,26 +19,38 @@
             android:layout_marginTop="10dp"
             android:layout_marginStart="10dp"/>
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/petProfile_BTN_petName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pet name"
+            android:textSize="25sp"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:gravity="center"
+            android:layout_gravity="center"/>
+
+        <ImageView
             android:id="@+id/petProfile_IMG_petImage"
             android:layout_width="220dp"
             android:layout_height="220dp"
             android:src="@drawable/img_dogplaceholder"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="5dp"/>
         <Space
             android:layout_width="0dp"
-            android:layout_height="20dp"/>
+            android:layout_height="10dp"/>
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/petProfile_LBL_contacts"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Contacts"
-            android:textSize="20sp"/>
+            android:fontFamily="sans-serif-condensed-medium"
+            android:textSize="20sp"
+            android:paddingHorizontal="5dp"/>
         <Space
             android:layout_width="0dp"
-            android:layout_height="20dp"/>
+            android:layout_height="10dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -151,7 +163,7 @@
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/petprofilepage_event_card"
-            android:layout_marginTop="8dp"/>
+            android:layout_marginTop="5dp"/>
 
     </LinearLayout>
 
