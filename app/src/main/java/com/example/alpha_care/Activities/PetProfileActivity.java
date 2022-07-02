@@ -18,12 +18,10 @@ import com.example.alpha_care.Objects.Pet;
 import com.example.alpha_care.Objects.PetEvent;
 import com.example.alpha_care.R;
 import com.example.alpha_care.Repository;
+import com.example.alpha_care.Utils.ImageLoadingController;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textview.MaterialTextView;
-import com.squareup.picasso.Picasso;
-
-import java.io.File;
 
 public class PetProfileActivity extends AppCompatActivity {
     private Intent intent;
@@ -113,7 +111,8 @@ public class PetProfileActivity extends AppCompatActivity {
         }
         petProfile_BTN_petName.setText(pet.getName());
         if(pet.getPetImageUrl() != null)
-            Picasso.get().load(pet.getPetImageUrl()).into(petProfile_IMG_petImage);
+            ImageLoadingController.loadImageByUrlToImageView(this, petProfile_IMG_petImage, pet.getPetImageUrl());
+            //Picasso.get().load(pet.getPetImageUrl()).into(petProfile_IMG_petImage);
         Log.d("tagg", "pet URL: " + pet.getPetImageUrl());
 
     }

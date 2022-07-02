@@ -1,27 +1,32 @@
 package com.example.alpha_care.AdaptersToRecycleView;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.alpha_care.CallBacks.CallBack_PetCard;
 import com.example.alpha_care.Objects.Pet;
 import com.example.alpha_care.R;
+import com.example.alpha_care.Utils.ImageLoadingController;
 import com.google.android.material.textview.MaterialTextView;
-import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class PetCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     private List<Pet> petCardList;
     private CallBack_PetCard callBack_petCard;
-    public PetCardAdapter (){}
+    private Activity activity;
+    public PetCardAdapter (Activity activity){
+        this.activity = activity;
+    }
     public PetCardAdapter setPetCardList(List<Pet> petCardList){
         this.petCardList = petCardList;
         return this;
@@ -46,11 +51,15 @@ public class PetCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 /**
  * Connect to view
  */
+
         holder.homePage_LBL_petName.setText(pet.getName());
         holder.homePage_LBL_petAge.setText(pet.getAge()+"");
+
         if(pet.getPetImageUrl() != null)
-            Picasso.get().load(pet.getPetImageUrl()).into(holder.homePage_IMG_petImage);
-        holder.homePage_IMG_petImage.setImageResource(R.drawable.img_dogplaceholder);
+            ImageLoadingController.loadImageByUrlToImageView(activity, holder.homePage_IMG_petImage, pet.getPetImageUrl());
+            //Picasso.get().load(pet.getPetImageUrl()).into(holder.homePage_IMG_petImage);
+        else
+            holder.homePage_IMG_petImage.setImageResource(R.drawable.img_dogplaceholder);
     }
 
     @Override
@@ -82,5 +91,6 @@ public class PetCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             });
         }
     }
+
 
 }

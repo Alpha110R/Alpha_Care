@@ -83,7 +83,7 @@ public class HomePageFragment extends Fragment {
 
     public void restartPetCardAdapterToListView() {
         //TODO: Retrieve pet data from the pet collection by the pet's UID in the user's list
-        petCardAdapter = new PetCardAdapter().setCallBack_PetCard(callBack_petCard);
+        //petCardAdapter = new PetCardAdapter().setCallBack_PetCard(callBack_petCard);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(petCardAdapter);
     }
