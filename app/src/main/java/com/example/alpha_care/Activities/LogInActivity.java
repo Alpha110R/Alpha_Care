@@ -89,7 +89,7 @@ public class LogInActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         if(user!=null){
-            Repository.getMe().getUserByID(user.getUid());
+            Repository.getMe().getUserByID(this);
         }
     }
 

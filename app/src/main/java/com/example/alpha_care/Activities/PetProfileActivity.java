@@ -82,9 +82,12 @@ public class PetProfileActivity extends AppCompatActivity {
 
     public void initializePet(Pet pet){
         this.pet = pet;
-        initializeAmountsOfEventsAndPetName();
+        //initializeAmountsOfEventsAndPetName();
         restartPetEventCardAdapterToListView();
-
+        petProfile_BTN_petName.setText(pet.getName());
+        if(pet.getPetImageUrl() != null)
+            ImageLoadingController.loadImageByUrlToImageView(this, petProfile_IMG_petImage, pet.getPetImageUrl());
+        //Picasso.get().load(pet.getPetImageUrl()).into(petProfile_IMG_petImage);
     }
 
     private void moveToPageWithBundle(Class activity){
@@ -109,12 +112,6 @@ public class PetProfileActivity extends AppCompatActivity {
                     break;
             }
         }
-        petProfile_BTN_petName.setText(pet.getName());
-        if(pet.getPetImageUrl() != null)
-            ImageLoadingController.loadImageByUrlToImageView(this, petProfile_IMG_petImage, pet.getPetImageUrl());
-            //Picasso.get().load(pet.getPetImageUrl()).into(petProfile_IMG_petImage);
-        Log.d("tagg", "pet URL: " + pet.getPetImageUrl());
-
     }
 
     private void findViews() {

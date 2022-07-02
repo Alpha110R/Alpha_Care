@@ -37,16 +37,12 @@ public class Repository {
     }
     public static Repository getMe(){return me;}
 
-    public void getUserByID(String userID){
-        myFireStore.getUserByID(userID);
+    public void getUserByID(Activity activity){
+        myFireStore.getUserByID(activity);
     }
 
     public void getPetByID(Activity activity, String petID){
         myFireStore.getPetByID(activity, petID);
-    }
-
-    public void getUserByPhoneNumber(String phoneNumber) {
-        myFireStore.getUserByPhoneNumber(phoneNumber);
     }
 
     public void insertToDataBase(Object obj){
@@ -54,7 +50,7 @@ public class Repository {
             myFireStore.addPetToDataBaseUpdateUser((Pet)obj);
         else{
             if(obj instanceof User)
-                myFireStore.upsertUserToDataBase((User)obj);
+                myFireStore.addNewUser((User)obj);
         }
     }
     public void updatePetByNewEventCard(Activity activity, Pet pet){
@@ -73,10 +69,20 @@ public class Repository {
         }
     }
 
+    public void getAllContactsInTheApp(List <String> phoneNumbers, Activity activity){
+        for (String phoneNumber :
+                phoneNumbers) {
+            myFireStore.getUserByPhoneNumber(phoneNumber, activity);
+        }
+    }
+
     public void uploadImageToStorage(Activity activity, Uri imageUri, ProgressBar progressBar){
         myFireStorage.uploadFile(activity, imageUri, progressBar);
     }
 
+    public void deletePetAtCurrentUser(Activity activity, String petID){
+        myFireStore.deletePetAtCurrentUser(activity, petID);
+    }
 
     private CallBack_getFromDB callBack_getFromDB = new CallBack_getFromDB() {
         @Override

@@ -131,11 +131,11 @@ import java.util.Map;
         //Log.d("tagg", "onResume BasePage");
 
     }
-*/
+
 
 
     //Contact Read Permission///////////
-  /*  public void getPermissionToReadContactsFromPhone(){
+    public void getPermissionToReadContactsFromPhone(){
         if(!requestContactReadPermission.checkPermission(requestContactReadPermission.getWantPermission()))
             setPopUpValidation().show();
         else {

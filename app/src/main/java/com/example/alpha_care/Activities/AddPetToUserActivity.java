@@ -49,6 +49,7 @@ public class AddPetToUserActivity extends AppCompatActivity {
                 e.printStackTrace();
             }*/
             addPetToUser_BTN_submit.setClickable(false);
+            addPetToUser_BTN_submit.setAlpha(0.4f);
             mGetContent.launch("image/*");
 
         });
@@ -112,8 +113,17 @@ public class AddPetToUserActivity extends AppCompatActivity {
         pet.setPetImageUrl(imageUrl);
     }
 
+    /**
+     * After the upload of image is done it will turn it on
+     */
     public void setSubmitButtonOn(){
         addPetToUser_BTN_submit.setClickable(true);
+        addPetToUser_BTN_submit.setAlpha(1);
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("tagg", "onStop AddPetToUser activity");
+    }
 }

@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.alpha_care.Activities.PetsListActivity;
 import com.example.alpha_care.AdaptersToRecycleView.PetCardAdapter;
 import com.example.alpha_care.Objects.Pet;
+import com.example.alpha_care.R;
+import com.example.alpha_care.Repository;
 
 import java.util.List;
 
@@ -38,14 +40,15 @@ public class MessagesToUser {
         int position = viewHolder.getAdapterPosition();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(activity); //alert for confirm to delete
-        builder.setMessage("Are you sure to delete " + petList.get(position) + "?");    //set message
-
+        builder.setMessage("Are you sure to delete " + petList.get(position).getName() + "?");    //set message
+        builder.setTitle("Delete");
+        builder.setIcon(R.drawable.ic_alert);
         builder.setPositiveButton("REMOVE", new DialogInterface.OnClickListener() { //when click on DELETE
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                Repository.getMe().deletePetAtCurrentUser(activity, petList.get(position).getPetID());
                 petList.remove(position);
                 petCardAdapter.notifyDataSetChanged();
-                //sqldatabase.execSQL("delete from " + TABLE_NAME + " where _id='" + (position + 1) + "'"); //query for delete
                 return;
             }
         }).setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {  //not removing items if cancel is done

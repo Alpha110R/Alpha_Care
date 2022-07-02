@@ -2,14 +2,14 @@ package com.example.alpha_care.Objects;
 
 public class Contact {
     private String name,
-                   userID,//equals to his user ID KEY
+                    contactID,//equals to his user ID KEY
                    phoneNumber;
     public Contact (){}
-    public Contact (String userID){
-        this.userID = userID;
+    public Contact (String contactID){
+        this.contactID = contactID;
     }
 
-    public String getUserID(){return userID;}
+    public String getContactID(){return contactID;}
 
     public String getName() {
         return name;

@@ -4,9 +4,9 @@ import android.app.Activity;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.example.alpha_care.Activities.AddPetToUserActivity;
+import com.example.alpha_care.Activities.LogInActivity;
 import com.example.alpha_care.Activities.PetProfileActivity;
 import com.example.alpha_care.Activities.PetsListActivity;
 import com.example.alpha_care.CallBacks.CallBack_getFromDB;
@@ -20,14 +20,15 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
+
+import java.util.List;
 
 public class MyFireStore {
     private CollectionReference usersByID, usersByPhoneNumber, petsByID, petsByUserID;
     private User returnUser;
     private Pet pet;
+    private User user;
     private CallBack_getFromDB callBack_getFromDB;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -56,7 +57,7 @@ public class MyFireStore {
         return currentUserID;
     }
 
-    public void upsertUserToDataBase(User user){
+    public void updateUserToDataBase(User user){
         usersByID.document(user.getUID()).set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
@@ -65,15 +66,31 @@ public class MyFireStore {
         });
     }
 
-    public void getUserByID(String userID){
-        DocumentReference docRef = usersByID.document(userID);
+    public void addNewUser(User user){
+        usersByID.document(user.getUID()).set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Log.d("tagg", "addUserToDataBase succeed");
+                addNewPhoneNumberUser(user.getPhoneNumber());
+            }
+        });
+    }
+
+    public void getUserByID(Activity activity){
+        DocumentReference docRef = usersByID.document(getCurrentUserID());
         docRef.get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         //Log.d("tagg", "getUserByID DocumentSnapshot data: " + documentSnapshot.getData());
                         returnUser = documentSnapshot.toObject(User.class);
-                        callBack_getFromDB.getUser(returnUser);
+                        if(activity instanceof LogInActivity){
+
+                            callBack_getFromDB.getUser(returnUser);
+                        }
+                        if(activity instanceof PetsListActivity){
+                            ((PetsListActivity)activity).setCurrentUser(returnUser);
+                        }
                     }
                 });
     }
@@ -93,9 +110,9 @@ public class MyFireStore {
                 });
     }
 
-    public void getUserByPhoneNumber(String phoneNumber){
-        DocumentReference docRef = usersByPhoneNumber.document(phoneNumber);
-        docRef.get()
+    public void getUserByPhoneNumber(String phoneNumber, Activity activity){
+        usersByPhoneNumber.document(phoneNumber)
+                .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -103,16 +120,27 @@ public class MyFireStore {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
                                 Log.d("tagg", "getUserByPhoneNumber DocumentSnapshot data: " + document.getData());
-                                returnUser = document.toObject(User.class);
-                                callBack_getFromDB.getUser(returnUser);
+                                if(activity instanceof PetsListActivity)
+                                    ((PetsListActivity)activity).addContactPhoneNumberToUserContacts(phoneNumber);
                             } else {
-                                Log.d("tagg", "No such document getUserByPhoneNumber: phone:" + phoneNumber);
+                                //Log.d("tagg", "No such document getUserByPhoneNumber: phone:" + phoneNumber);
                             }
                         } else {
                             Log.d("tagg", "getUserByPhoneNumber get FAILED with ", task.getException());
                         }
                     }
                 });
+    }
+
+    public void addNewPhoneNumberUser(String phoneNumber){
+        usersByPhoneNumber.document(phoneNumber)
+                            .set(getCurrentUserID())
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+
+                                }
+                            });
     }
 
     /**
@@ -128,10 +156,10 @@ public class MyFireStore {
                         .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                             @Override
                             public void onSuccess(DocumentSnapshot document) {
-                                User user = document.toObject(User.class);
+                                user = document.toObject(User.class);
                                 assert user != null;
                                 user.addPetIDToUserPetList(pet.getPetID());
-                                upsertUserToDataBase(user);
+                                updateUserToDataBase(user);
                             }
                         });
                 Log.d("tagg", "addPetToDataBase succeed");
@@ -221,18 +249,39 @@ public class MyFireStore {
                 });
     }
 
-    private void addPetToUser(Pet pet){
+    /**
+     * Deleting petID from the pets list in the current user.
+     * Not deleting the pet from the DB
+     * @param activity
+     * @param petID
+     */
+    public void deletePetAtCurrentUser(Activity activity, String petID){
         usersByID.document(getCurrentUserID())
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot document) {
-                        User user = document.toObject(User.class);
-                        assert user != null;
-                        user.addPetIDToUserPetList(pet.getPetID());
-                        upsertUserToDataBase(user);
-                    }
-                });
+                 .get()
+                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                     @Override
+                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                         if (task.isSuccessful()) {
+                             DocumentSnapshot document = task.getResult();
+                             if (document.exists()) {
+                                 user = document.toObject(User.class);
+                                 List <String> petList = user.getMyPets();
+                                 if(petList.contains(petID)){
+                                     petList.remove(petID);
+                                 }
+                                 user.setMyPets(petList);
+                                 updateUserToDataBase(user);
+                                 if(activity instanceof PetsListActivity){
+                                     ((PetsListActivity)activity).deletePetSucceed();
+                                 }
+                             } else {
+                                 Log.d("tagg", "No such document deletePetAtCurrentUser");
+                             }
+                         } else {
+                             Log.d("tagg", "deletePetAtCurrentUser get FAILED with ", task.getException());
+                         }
+                     }
+                 });
     }
 
 }
