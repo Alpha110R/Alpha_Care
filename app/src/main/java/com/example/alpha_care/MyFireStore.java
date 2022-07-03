@@ -5,11 +5,12 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.alpha_care.Activities.AddContactToPetActivity;
 import com.example.alpha_care.Activities.AddPetToUserActivity;
 import com.example.alpha_care.Activities.LogInActivity;
 import com.example.alpha_care.Activities.PetProfileActivity;
 import com.example.alpha_care.Activities.PetsListActivity;
-import com.example.alpha_care.CallBacks.CallBack_getFromDB;
+import com.example.alpha_care.Activities.SetUserNameActivity;
 import com.example.alpha_care.Objects.Pet;
 import com.example.alpha_care.Objects.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,30 +22,24 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.List;
 
 public class MyFireStore {
-    private CollectionReference usersByID, usersByPhoneNumber, petsByID, petsByUserID;
+    private CollectionReference usersByID, usersByUserName, petsByID, petsByUserID;
     private User returnUser;
     private Pet pet;
     private User user;
-    private CallBack_getFromDB callBack_getFromDB;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-
 
     public MyFireStore(){
         usersByID = db.collection("usersByID");//All the users in the application
-        usersByPhoneNumber = db.collection("usersByPhoneNumber");//All the users in the application
+        usersByUserName = db.collection("usersByUserName");//All the users in the application
         petsByID = db.collection("petsByID");//All the pets in the application
         petsByUserID = db.collection("petsByUserID");
 
     }
-    public void setCallBack_getFromDB(CallBack_getFromDB callBack_getFromDB){
-        this.callBack_getFromDB = callBack_getFromDB;
-    }
-
 
     private String getCurrentUserID(){
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -66,27 +61,25 @@ public class MyFireStore {
         });
     }
 
-    public void addNewUser(User user){
-        usersByID.document(user.getUID()).set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+    public void addNewUser(User userToAdd){
+        usersByID.document(userToAdd.getUID()).set(userToAdd).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                Log.d("tagg", "addUserToDataBase succeed");
-                addNewPhoneNumberUser(user.getPhoneNumber());
+                addNewUserName(userToAdd);
             }
         });
     }
 
     public void getUserByID(Activity activity){
-        DocumentReference docRef = usersByID.document(getCurrentUserID());
-        docRef.get()
+        usersByID.document(getCurrentUserID())
+                .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         //Log.d("tagg", "getUserByID DocumentSnapshot data: " + documentSnapshot.getData());
                         returnUser = documentSnapshot.toObject(User.class);
                         if(activity instanceof LogInActivity){
-
-                            callBack_getFromDB.getUser(returnUser);
+                            ((LogInActivity)activity).createNewUserIfNotExist(returnUser);
                         }
                         if(activity instanceof PetsListActivity){
                             ((PetsListActivity)activity).setCurrentUser(returnUser);
@@ -110,8 +103,8 @@ public class MyFireStore {
                 });
     }
 
-    public void getUserByPhoneNumber(String phoneNumber, Activity activity){
-        usersByPhoneNumber.document(phoneNumber)
+    public void getUserByUserName(String userName, Activity activity){
+        usersByUserName.document(userName)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -119,22 +112,25 @@ public class MyFireStore {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
-                                Log.d("tagg", "getUserByPhoneNumber DocumentSnapshot data: " + document.getData());
-                                if(activity instanceof PetsListActivity)
-                                    ((PetsListActivity)activity).addContactPhoneNumberToUserContacts(phoneNumber);
+                                Log.d("tagg", "getUserByUserName DocumentSnapshot data: " + document.getData());
+                                if(activity instanceof SetUserNameActivity)
+                                    ((SetUserNameActivity)activity).userNameExist();
                             } else {
-                                //Log.d("tagg", "No such document getUserByPhoneNumber: phone:" + phoneNumber);
+                                Log.d("tagg", "No such document getUserByUserName: userName:" + userName);
+                                if(activity instanceof SetUserNameActivity) {
+                                    ((SetUserNameActivity) activity).createUser();//initialize the username activate addNewUser()
+                                }
                             }
                         } else {
-                            Log.d("tagg", "getUserByPhoneNumber get FAILED with ", task.getException());
+                            Log.d("tagg", "getUserByUserName get FAILED with ", task.getException());
                         }
                     }
                 });
     }
 
-    public void addNewPhoneNumberUser(String phoneNumber){
-        usersByPhoneNumber.document(phoneNumber)
-                            .set(getCurrentUserID())
+    private void addNewUserName(User newUser){
+        usersByUserName.document(newUser.getUserName())
+                            .set(newUser)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
@@ -247,6 +243,22 @@ public class MyFireStore {
                         }
                     }
                 });
+    }
+
+    public void getAllUserName(Activity activity){
+        usersByUserName.get()
+                        .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                            @Override
+                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                for (DocumentSnapshot documentSnapshot :
+                                        queryDocumentSnapshots.getDocuments()) {
+                                    user = documentSnapshot.toObject(User.class);
+                                    if(activity instanceof AddContactToPetActivity){
+                                        ((AddContactToPetActivity)activity).addUserNameToList(user.getUserName());
+                                    }
+                                }
+                            }
+                        });
     }
 
     /**

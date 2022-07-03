@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="7dp"
+    app:cardElevation="7dp"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="20dp"
+    android:backgroundTint="#CBEAD1">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/addContact_LBL_userName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Contact Name"
+        android:textSize="35sp"
+        android:layout_margin="10dp"
+        android:textColor="#397D54"
+        android:gravity="center"/>
+
+</com.google.android.material.card.MaterialCardView>

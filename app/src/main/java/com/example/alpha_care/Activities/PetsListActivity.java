@@ -42,19 +42,11 @@ public class PetsListActivity extends AppCompatActivity {
     private User currentUser;
     private List<Pet> petList;
     private RequestContactReadPermission requestContactReadPermission;
-    private static final int PERMISSION_REQUEST_CODE = 1;
-    private Map<String, String> contacts;//<PhoneNumbers, names> RAW contacts
-    private List<String> existContacts;// List of all the phone numbers of the contacts of the current user that in the DB as a user
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("tagg", "onCreate PetsList activity");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pets_list);
-
-        requestContactReadPermission = new RequestContactReadPermission(this);
-        getPermissionToReadContactsFromPhone();
 
         petList = new ArrayList<>();// Reset the List for the user's pets
         Repository.getMe().getUserByID(this);// Get the current user -> activate the setCurrentUser();
@@ -132,52 +124,16 @@ public class PetsListActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.d("tagg", "onStart PetsList activity");
-
-        //Log.d("tagg", "my pets: " + currentUser.toString());
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d("tagg", "onResume PetsList activity");
-
-
-
-    }
 
     private CallBack_PetCard callBack_petCard = new CallBack_PetCard() {
         @Override
         public void clicked(Pet pet) {
             bundle.putString(EnumFinals.PET_ID.toString(), pet.getPetID());
+            bundle.putString(EnumFinals.USER_NAME.toString(), currentUser.getUserName());
             moveToPageWithBundle(PetProfileActivity.class);
         }
     };
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d("tagg", "onPause PetsList activity");
-
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.d("tagg", "onStop PetsList activity");
-
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d("tagg", "onDestroy PetsList activity");
-
-    }
 
 
     public void deletePetSucceed(){
@@ -228,58 +184,39 @@ public class PetsListActivity extends AppCompatActivity {
 
     };
 
-//Contact Read Permission///////////
-    public void getPermissionToReadContactsFromPhone(){
-        if(!requestContactReadPermission.checkPermission(requestContactReadPermission.getWantPermission()))
-            setPopUpValidation().show();
-        else {
 
-            if (contacts == null) {//TODO: check in DB if in the user there is contacts list
-                MessagesToUser.getMe().makeToastMessage("Read contacts");
-                contacts = requestContactReadPermission.readContacts();
-                existContacts = new ArrayList<>();
-                Repository.getMe().getAllContactsInTheApp((List<String>) contacts.keySet(), this);
-            }
-        }
-    }
-
-    /**
-     * FireStore will call it if the contact is in the DB
-     * @param phoneNumber
-     */
-    public void addContactPhoneNumberToUserContacts(String phoneNumber){
-        if(!existContacts.contains(phoneNumber))
-            existContacts.add(phoneNumber);
-    }
-
-    //Functions for the contact read permission
-    public MaterialAlertDialogBuilder setPopUpValidation(){
-        MaterialAlertDialogBuilder selectGameScreen = new MaterialAlertDialogBuilder(this)
-                .setTitle("Contacts Permission")
-                .setIcon(R.drawable.ic_icon_popup_contact_permission)
-                .setMessage("HI!\nWe need your permission to read your contacts.\nWe would like to connect you with your pet's partners." +
-                        "\nEnjoy!")
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        requestContactReadPermission.requestPermission(requestContactReadPermission.getWantPermission());
-                    }
-                });
-        return selectGameScreen;
-    }
-
-    //What makes the permission massage responsive and jump again after click no
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case PERMISSION_REQUEST_CODE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    contacts = requestContactReadPermission.readContacts();
-                } else {
-                    requestContactReadPermission.requestPermission(requestContactReadPermission.getWantPermission());
-                }
-                break;
-        }
+    protected void onStart() {
+        super.onStart();
+        //Log.d("tagg", "onStart PetsList activity");
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //Log.d("tagg", "onResume PetsList activity");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //Log.d("tagg", "onPause PetsList activity");
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        //Log.d("tagg", "onStop PetsList activity");
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //Log.d("tagg", "onDestroy PetsList activity");
+
+    }
+
+
 }

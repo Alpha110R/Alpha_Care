@@ -44,6 +44,18 @@
             android:screenOrientation="portrait">
 
         </activity>
+        <activity
+            android:name=".Activities.SetUserNameActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
+
+        </activity>
+        <activity
+            android:name=".Activities.AddContactToPetActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
+
+        </activity>
     </application>
 
 </manifest>

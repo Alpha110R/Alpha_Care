@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public class Pet {
     private String petImageUrl;
-    private Map<String, String> myContacts;//<userID, phoneNumber (of userID)> List of userID that represent the partners. show the names of the contact with this userID, if not exist -> show from the collectionByPhoneNumber
+    private List<String> myContactsUserName;//<userID, phoneNumber (of userID)> List of userID that represent the partners. show the names of the contact with this userID, if not exist -> show from the collectionByPhoneNumber
     private Map<String,PetEvent> petEvents;//<EnumPetEventType.tostring(), PetEvent> Presents the events categories like: Walk, Food, Groom
     private String name, birthDayDate, petID;
     private int age;
@@ -33,12 +33,12 @@ public class Pet {
         return this;
     }
 
-    public Map<String, String> getMyContacts() {
-        return myContacts;
+    public List<String> getMyContactsUserName() {
+        return myContactsUserName;
     }
 
-    public Pet setMyContacts(Map<String, String> myContacts) {
-        this.myContacts = myContacts;
+    public Pet setMyContactsUserName(List<String> myContactsUserName) {
+        this.myContactsUserName = myContactsUserName;
         return this;
     }
 
@@ -105,10 +105,10 @@ public class Pet {
     }
 
     private String printMyContacts(){
-        if(myContacts !=null) {
+        if(myContactsUserName !=null) {
             StringBuilder s = new StringBuilder();
             for (String c :
-                    myContacts.values()) {
+                    myContactsUserName) {
                 s.append("contact phone number: ").append(c).append("\n");
             }
             return s.toString();

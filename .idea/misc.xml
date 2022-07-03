@@ -10,14 +10,17 @@
         <entry key="..\:/ALON/programing/3rd year/semsterB/Selolar Application/Alpha_Care/app/src/main/res/drawable/ic_alert.xml" value="0.119" />
         <entry key="..\:/ALON/programing/3rd year/semsterB/Selolar Application/Alpha_Care/app/src/main/res/drawable/petprofile_selector_drawable.xml" value="0.252" />
         <entry key="..\:/ALON/programing/3rd year/semsterB/Selolar Application/Alpha_Care/app/src/main/res/layout-v28/activity_main.xml" value="0.28854166666666664" />
+        <entry key="..\:/ALON/programing/3rd year/semsterB/Selolar Application/Alpha_Care/app/src/main/res/layout/activity_addcontacttopet.xml" value="0.33" />
         <entry key="..\:/ALON/programing/3rd year/semsterB/Selolar Application/Alpha_Care/app/src/main/res/layout/activity_addpettouser.xml" value="0.25" />
         <entry key="..\:/ALON/programing/3rd year/semsterB/Selolar Application/Alpha_Care/app/src/main/res/layout/activity_authentication.xml" value="0.2640625" />
         <entry key="..\:/ALON/programing/3rd year/semsterB/Selolar Application/Alpha_Care/app/src/main/res/layout/activity_basepage.xml" value="0.25677083333333334" />
         <entry key="..\:/ALON/programing/3rd year/semsterB/Selolar Application/Alpha_Care/app/src/main/res/layout/activity_home.xml" value="0.16776315789473684" />
         <entry key="..\:/ALON/programing/3rd year/semsterB/Selolar Application/Alpha_Care/app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="..\:/ALON/programing/3rd year/semsterB/Selolar Application/Alpha_Care/app/src/main/res/layout/activity_main.xml" value="0.33" />
-        <entry key="..\:/ALON/programing/3rd year/semsterB/Selolar Application/Alpha_Care/app/src/main/res/layout/activity_petprofile.xml" value="0.25" />
+        <entry key="..\:/ALON/programing/3rd year/semsterB/Selolar Application/Alpha_Care/app/src/main/res/layout/activity_petprofile.xml" value="0.33" />
         <entry key="..\:/ALON/programing/3rd year/semsterB/Selolar Application/Alpha_Care/app/src/main/res/layout/activity_pets_list.xml" value="0.12590579710144928" />
+        <entry key="..\:/ALON/programing/3rd year/semsterB/Selolar Application/Alpha_Care/app/src/main/res/layout/activity_setusername.xml" value="0.2989583333333333" />
+        <entry key="..\:/ALON/programing/3rd year/semsterB/Selolar Application/Alpha_Care/app/src/main/res/layout/addcontacttopet_searchcontact_card.xml" value="0.33" />
         <entry key="..\:/ALON/programing/3rd year/semsterB/Selolar Application/Alpha_Care/app/src/main/res/layout/fragment_home.xml" value="0.2916666666666667" />
         <entry key="..\:/ALON/programing/3rd year/semsterB/Selolar Application/Alpha_Care/app/src/main/res/layout/fragment_petprofile.xml" value="0.2916666666666667" />
         <entry key="..\:/ALON/programing/3rd year/semsterB/Selolar Application/Alpha_Care/app/src/main/res/layout/homepage_pet_card.xml" value="0.22" />

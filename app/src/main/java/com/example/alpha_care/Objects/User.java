@@ -8,8 +8,8 @@ import java.util.Map;
 
 public class User {
     private List<String> myPets;
-    private Map <String, Contact> myContacts;//<phoneNumber, Contact> -> mainly for the names in the pet's profile
-    private String userID, phoneNumber;
+    //private Map <String, Contact> myContacts;//<phoneNumber, Contact> -> mainly for the names in the pet's profile
+    private String userID, phoneNumber, userName;
     private EnumUserType enumUserType;
     public User(){
         this.myPets = new ArrayList<>();
@@ -48,13 +48,22 @@ public class User {
         return this;
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public User setUserName(String userName) {
+        this.userName = userName;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "User:\n" +
                 "UserID: '" + userID + '\n' +
                 "PhoneNumber: '" + phoneNumber + '\n' +
-                "myPetsID: " + printPetsId() +
-                "\nmyContacts: " + printMyContacts() +
+                "User Name: " + userName +
+                "\nmyPetsID: " + printPetsId() +
                 "\nenumUserType: " + enumUserType ;
     }
     private String printPetsId(){
@@ -63,17 +72,6 @@ public class User {
             for (String m :
                     myPets) {
                 s.append(m).append("\n");
-            }
-            return s.toString();
-        }
-        return "null";
-    }
-    private String printMyContacts(){
-        if(myContacts !=null) {
-            StringBuilder s = new StringBuilder();
-            for (Contact c :
-                    myContacts.values()) {
-                s.append("contact name: ").append(c.getName()).append(" contact phone: ").append(c.getPhoneNumber()).append("\n");
             }
             return s.toString();
         }

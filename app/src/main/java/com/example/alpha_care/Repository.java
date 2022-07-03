@@ -2,11 +2,8 @@ package com.example.alpha_care;
 
 import android.app.Activity;
 import android.net.Uri;
-import android.util.Log;
 import android.widget.ProgressBar;
 
-import com.example.alpha_care.CallBacks.CallBack_getFromDB;
-import com.example.alpha_care.CallBacks.CallBack_getFromRepository;
 import com.example.alpha_care.Objects.Pet;
 import com.example.alpha_care.Objects.User;
 import com.example.alpha_care.Utils.MyFireStorage;
@@ -19,15 +16,9 @@ public class Repository {
     private MyFireStorage myFireStorage;
     private User user;
     private Pet pet;
-    private CallBack_getFromRepository callBack_getFromRepository;
-
-    public void setCallBack_getFromRepository(CallBack_getFromRepository callBack_getFromRepository) {
-        this.callBack_getFromRepository = callBack_getFromRepository;
-    }
 
     public Repository(){
         myFireStore = new MyFireStore();
-        myFireStore.setCallBack_getFromDB(callBack_getFromDB);
         myFireStorage = new MyFireStorage();
     }
 
@@ -57,6 +48,14 @@ public class Repository {
         myFireStore.updatePetByNewEventCard(activity, pet);
     }
 
+    public void getUserByUserName(String userName, Activity activity){
+        myFireStore.getUserByUserName(userName, activity);
+    }
+
+    public void getAllUserName(Activity activity){
+        myFireStore.getAllUserName(activity);
+    }
+
     /**
      * Func to display the pets of the current user.
      * @param petsListID
@@ -69,13 +68,6 @@ public class Repository {
         }
     }
 
-    public void getAllContactsInTheApp(List <String> phoneNumbers, Activity activity){
-        for (String phoneNumber :
-                phoneNumbers) {
-            myFireStore.getUserByPhoneNumber(phoneNumber, activity);
-        }
-    }
-
     public void uploadImageToStorage(Activity activity, Uri imageUri, ProgressBar progressBar){
         myFireStorage.uploadFile(activity, imageUri, progressBar);
     }
@@ -83,17 +75,5 @@ public class Repository {
     public void deletePetAtCurrentUser(Activity activity, String petID){
         myFireStore.deletePetAtCurrentUser(activity, petID);
     }
-
-    private CallBack_getFromDB callBack_getFromDB = new CallBack_getFromDB() {
-        @Override
-        public void getPet(Pet returnPet) {
-            callBack_getFromRepository.getPet(returnPet);
-        }
-
-        @Override
-        public void getUser(User returnUser) {
-            callBack_getFromRepository.getUser(returnUser);
-        }
-    };
 
 }

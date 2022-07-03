@@ -26,14 +26,15 @@ import com.google.android.material.textview.MaterialTextView;
 public class PetProfileActivity extends AppCompatActivity {
     private Intent intent;
     private Bundle bundle;
-    private FloatingActionButton petProfile_FAB_walk, petProfile_FAB_food, petProfile_FAB_groom, petProfile_FAB_addEventCard;
-    private MaterialTextView petProfile_BTN_petName, petProfile_LBL_amountGroomming, petProfile_LBL_amountFood, petProfile_LBL_amountWalk;
+    private FloatingActionButton petProfile_FAB_walk, petProfile_FAB_food, petProfile_FAB_groom, petProfile_FAB_addEventCard, petProfile_FAB_addContact;
+    private MaterialTextView petProfile_BTN_petName, petProfile_LBL_amountGroomming, petProfile_LBL_amountFood, petProfile_LBL_amountWalk, petProfile_LBL_contacts;
     private MaterialButton petProfile_BTN_close;
     private ImageView petProfile_IMG_petImage;
     private RecyclerView recyclerView;
     private EventCardAdapter eventCardAdapter;
     private EnumPetEventType enumPetEventTypeFlag;
     private Pet pet;
+    private String userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,8 +68,13 @@ public class PetProfileActivity extends AppCompatActivity {
         });
 
         petProfile_FAB_addEventCard.setOnClickListener(view -> {
-            pet.addEventCard(enumPetEventTypeFlag, "ALON");
+            pet.addEventCard(enumPetEventTypeFlag, userName);
             Repository.getMe().updatePetByNewEventCard(this, pet);
+
+        });
+
+        petProfile_FAB_addContact.setOnClickListener(view -> {
+            moveToPageWithBundle(AddContactToPetActivity.class);
 
         });
 
@@ -77,6 +83,7 @@ public class PetProfileActivity extends AppCompatActivity {
     private void initializeIntentBundle(){
         intent = getIntent();
         bundle = intent.getBundleExtra(EnumFinals.BUNDLE.toString());
+        userName = bundle.getString(EnumFinals.USER_NAME.toString());
         Repository.getMe().getPetByID(this, bundle.getString(EnumFinals.PET_ID.toString()));//Activate initializePet()
     }
 
@@ -126,6 +133,8 @@ public class PetProfileActivity extends AppCompatActivity {
         petProfile_BTN_petName = findViewById(R.id.petProfile_BTN_petName);
         petProfile_BTN_close = findViewById(R.id.petProfile_BTN_close);
         petProfile_FAB_addEventCard = findViewById(R.id.petProfile_FAB_addEventCard);
+        petProfile_FAB_addContact = findViewById(R.id.petProfile_FAB_addContact);
+        petProfile_LBL_contacts = findViewById(R.id.petProfile_LBL_contacts);
     }
 
     private void restartPetEventCardAdapterToListView(){
