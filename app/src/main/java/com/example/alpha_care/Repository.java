@@ -68,6 +68,14 @@ public class Repository {
         }
     }
 
+    public void addContactToPet(String petID, String userName){
+        myFireStore.addContactToPet(petID, userName);
+    }
+
+    public void updateContactUserToPet(Activity activity, String userID, String petID){
+        myFireStore.updateContactUserToPet(activity, userID, petID);
+    }
+
     public void uploadImageToStorage(Activity activity, Uri imageUri, ProgressBar progressBar){
         myFireStorage.uploadFile(activity, imageUri, progressBar);
     }

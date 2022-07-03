@@ -21,16 +21,19 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AddContactToPetActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private AddContactCardAdapter addContactCardAdapter;
     private List<String> userNameListFromDB;
+    private Map<String, String> userIDByUserNameMap;//<userName, userID> To get the userID faster when i want to add to it the current pet
     private TextInputEditText addContactToPet_EDT_userName;
     private Intent intent;
     private Bundle bundle;
-
+    private String petID, userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +41,12 @@ public class AddContactToPetActivity extends AppCompatActivity {
         setContentView(R.layout.activity_addcontacttopet);
         findViews();
         userNameListFromDB = new ArrayList<>();
+        userIDByUserNameMap = new HashMap<>();
         Repository.getMe().getAllUserName(this);
         restartPetCardAdapter();
         initializeIntentBundle();
+        petID = bundle.getString(EnumFinals.PET_ID.toString());
+
         addContactToPet_EDT_userName.addTextChangedListener(new TextWatcher() {
 
             @SuppressLint("NotifyDataSetChanged")
@@ -85,6 +91,11 @@ public class AddContactToPetActivity extends AppCompatActivity {
         bundle = intent.getBundleExtra(EnumFinals.BUNDLE.toString());
     }
 
+    /**
+     * Function to find all the usenames that start with the input of search
+     * @param search
+     * @return
+     */
     public List<String> getListContactBySearch(String search){
         List<String> newUserNameList = new ArrayList<>();
         for(int i=0 ; i< userNameListFromDB.size(); i++){
@@ -94,19 +105,30 @@ public class AddContactToPetActivity extends AppCompatActivity {
         return newUserNameList;
     }
 
+    /**
+     * Called by the fireStore when retrieving all the usernames in the DB
+     * @param userName
+     */
     @SuppressLint("NotifyDataSetChanged")
-    public void addUserNameToList(String userName){
+    public void addUserNameToList(String userName, String userID){
         userNameListFromDB.add(userName);
         addContactCardAdapter.notifyDataSetChanged();
+        userIDByUserNameMap.put(userName, userID);
     }
 
 
     CallBack_UserNameContactCard callBack_userNameContactCard = new CallBack_UserNameContactCard() {
         @Override
-        public void clicked(String userName) {
-            Log.d("tagg", "user name clicked: " + userName);
+        public void clicked(String userName) {//Need to add to the contacts list of the pet the user name
+                                                //+ To add to the user of this username the current petID
+            userID = userIDByUserNameMap.get(userName);
+            Log.d("tagg", "clicked in add user. userID: " + userID + "\npetID: " + petID);
+            Repository.getMe().updateContactUserToPet(AddContactToPetActivity.this, userID, petID);
+            Repository.getMe().addContactToPet(petID, userName);
+            moveToPageWithBundle(PetProfileActivity.class);
         }
     };
+
     private void moveToPageWithBundle(Class activity){
         intent = new Intent(this, activity);
         intent.putExtra(EnumFinals.BUNDLE.toString(),bundle);

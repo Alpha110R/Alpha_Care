@@ -27,7 +27,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.List;
 
 public class MyFireStore {
-    private CollectionReference usersByID, usersByUserName, petsByID, petsByUserID;
+    private CollectionReference usersByID, usersByUserName, petsByID;
     private User returnUser;
     private Pet pet;
     private User user;
@@ -37,8 +37,6 @@ public class MyFireStore {
         usersByID = db.collection("usersByID");//All the users in the application
         usersByUserName = db.collection("usersByUserName");//All the users in the application
         petsByID = db.collection("petsByID");//All the pets in the application
-        petsByUserID = db.collection("petsByUserID");
-
     }
 
     private String getCurrentUserID(){
@@ -163,15 +161,28 @@ public class MyFireStore {
         });
     }
 
-
-    public void upsertPetToDataBase(Pet pet){
-        petsByID.document(pet.getPetID()).set(pet).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                Log.d("tagg", "updatePetToDataBase succeed");
-
-            }
-        });
+    /**
+     * Add contact to the contacts list in the pet -> to show all the contacts in this pet
+     * @param petID
+     * @param userName
+     */
+    public void addContactToPet(String petID, String userName){
+        petsByID.document(petID)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot document) {
+                       pet = document.toObject(Pet.class);
+                        assert pet != null;
+                        pet.addContactUserNameToList(userName);
+                        petsByID.document(petID).set(pet).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Log.d("tagg", "Contact added to pet");
+                            }
+                        });
+                    }
+                });
     }
 
     public void updatePetByNewEventCard(Activity activity, Pet pet){
@@ -186,32 +197,21 @@ public class MyFireStore {
     }
 
     /**
-     * Adding pet to user
-     * @param pet
+     * Update user for a new petID by another user that added him to a pet
+     * @param activity
+     * @param userID
+     * @param petID
      */
-    public void upsertPetToUserDataBase(Activity activity, Pet pet){
-        usersByID.document(getCurrentUserID())
+    public void updateContactUserToPet(Activity activity, String userID, String petID){
+        usersByID.document(userID)
                     .get()
                     .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot document) {
-
-                if(activity instanceof PetsListActivity){
-                    ((PetsListActivity) activity).addPetToList(pet);
-                }
-                if(activity instanceof AddPetToUserActivity){
-                    petsByID.document(pet.getPetID()).set(pet).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void unused) {
-                            Log.d("tagg", "addPetToDataBase succeed");
-                        }
-                    });
-                    ((AddPetToUserActivity) activity).moveToPageWithBundle(PetsListActivity.class);
-
-                }
-
-                Log.d("tagg", "upsertPetToUserDataBase: " + document.getData());
-
+                user = document.toObject(User.class);
+                assert user != null;
+                user.addPetIDToUserPetList(petID);
+                updateUserToDataBase(user);
             }
         });
     }
@@ -254,7 +254,7 @@ public class MyFireStore {
                                         queryDocumentSnapshots.getDocuments()) {
                                     user = documentSnapshot.toObject(User.class);
                                     if(activity instanceof AddContactToPetActivity){
-                                        ((AddContactToPetActivity)activity).addUserNameToList(user.getUserName());
+                                        ((AddContactToPetActivity)activity).addUserNameToList(user.getUserName(), user.getUID());
                                     }
                                 }
                             }

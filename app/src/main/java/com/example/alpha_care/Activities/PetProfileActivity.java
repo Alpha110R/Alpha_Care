@@ -23,6 +23,8 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textview.MaterialTextView;
 
+import java.util.List;
+
 public class PetProfileActivity extends AppCompatActivity {
     private Intent intent;
     private Bundle bundle;
@@ -74,6 +76,7 @@ public class PetProfileActivity extends AppCompatActivity {
         });
 
         petProfile_FAB_addContact.setOnClickListener(view -> {
+            bundle.putString(EnumFinals.PET_ID.toString(), pet.getPetID());
             moveToPageWithBundle(AddContactToPetActivity.class);
 
         });
@@ -95,6 +98,7 @@ public class PetProfileActivity extends AppCompatActivity {
         if(pet.getPetImageUrl() != null)
             ImageLoadingController.loadImageByUrlToImageView(this, petProfile_IMG_petImage, pet.getPetImageUrl());
         //Picasso.get().load(pet.getPetImageUrl()).into(petProfile_IMG_petImage);
+        setListContactsOfPet();
     }
 
     private void moveToPageWithBundle(Class activity){
@@ -144,6 +148,19 @@ public class PetProfileActivity extends AppCompatActivity {
         changeButtonPressedStyle();
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(eventCardAdapter);
+    }
+
+    public void setListContactsOfPet(){
+        List<String> contacts = pet.getMyContactsUserName();
+        StringBuilder s = new StringBuilder();
+        s.append("Contacts: ");
+        for (String userName :
+                contacts) {
+            s.append(userName + ", ");
+        }
+        s.deleteCharAt(s.length()-1);
+        s.deleteCharAt(s.length()-1);//Delete the last ", "
+        petProfile_LBL_contacts.setText(s);
     }
 
     @SuppressLint("NotifyDataSetChanged")

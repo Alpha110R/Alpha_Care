@@ -2,6 +2,7 @@ package com.example.alpha_care.Objects;
 
 import com.example.alpha_care.Enums.EnumPetEventType;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ public class Pet {
 
     public Pet(){
         this.petID = UUID.randomUUID().toString().replaceAll("-", "").toUpperCase();
+        myContactsUserName = new ArrayList<>();
         petEvents = new HashMap<>();
         petEvents.put(EnumPetEventType.WALK.toString(), new PetEvent().setEnumPetEventType(EnumPetEventType.WALK));
         petEvents.put(EnumPetEventType.FOOD.toString(), new PetEvent().setEnumPetEventType(EnumPetEventType.FOOD));
@@ -40,6 +42,10 @@ public class Pet {
     public Pet setMyContactsUserName(List<String> myContactsUserName) {
         this.myContactsUserName = myContactsUserName;
         return this;
+    }
+
+    public void addContactUserNameToList(String userName){
+        myContactsUserName.add(userName);
     }
 
     public Map<String,PetEvent> getPetEvents() {
