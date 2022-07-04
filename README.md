@@ -8,7 +8,7 @@ https://youtu.be/I0IgqKYwTZM
 
 # Technologies:
 
-:fire: ### FireBase:
+### :fire: FireBase:
 
 :fire: Firebase Authentication
 
