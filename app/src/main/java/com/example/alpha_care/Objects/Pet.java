@@ -89,7 +89,7 @@ public class Pet {
             for (PetEvent petEvent :
                     petEvents.values()) {
                 if (petEvent.getEnumPetEventType() == type)
-                    return (List) petEvent.getPetEventCardList();
+                    return petEvent.getPetEventCardList();
             }
         }
         return null;
@@ -97,8 +97,19 @@ public class Pet {
 
     public void addEventCard(EnumPetEventType enumPetEventType, String contactName){
         PetEvent petEvent = petEvents.get(enumPetEventType.toString());
-        petEvent.addEventCard(new PetEventCard().setEventCardCreatorContact(new Contact("").setName("ALON")));
+        assert petEvent != null;
+        petEvent.addEventCard(new PetEventCard().setEventCardCreatorContact(contactName));
         petEvents.put(enumPetEventType.toString(), petEvent);
+    }
+
+    public void deleteEventCard(EnumPetEventType enumPetEventType, int position){
+        if(petEvents != null) {
+            for (PetEvent petEvent :
+                    petEvents.values()) {
+                if (petEvent.getEnumPetEventType() == enumPetEventType)
+                   petEvent.deleteEventCardFromList(position);
+            }
+        }
     }
 
     @Override

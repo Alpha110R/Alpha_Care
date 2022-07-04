@@ -5,19 +5,20 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.alpha_care.AdaptersToRecycleView.EventCardAdapter;
+import com.example.alpha_care.CallBacks.CallBack_EventCardDelete;
 import com.example.alpha_care.Enums.EnumFinals;
 import com.example.alpha_care.Enums.EnumPetEventType;
 import com.example.alpha_care.Objects.Pet;
 import com.example.alpha_care.Objects.PetEvent;
 import com.example.alpha_care.R;
-import com.example.alpha_care.Repository;
+import com.example.alpha_care.Model.Repository;
 import com.example.alpha_care.Utils.ImageLoadingController;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -37,12 +38,14 @@ public class PetProfileActivity extends AppCompatActivity {
     private EnumPetEventType enumPetEventTypeFlag;
     private Pet pet;
     private String userName;
+    private ItemTouchHelper itemTouchHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_petprofile);
         initializeIntentBundle();
+        Repository.getMe().getPetByID(this, bundle.getString(EnumFinals.PET_ID.toString()));//Activate initializePet()
 
         findViews();
 
@@ -87,13 +90,11 @@ public class PetProfileActivity extends AppCompatActivity {
         intent = getIntent();
         bundle = intent.getBundleExtra(EnumFinals.BUNDLE.toString());
         userName = bundle.getString(EnumFinals.USER_NAME.toString());
-        Repository.getMe().getPetByID(this, bundle.getString(EnumFinals.PET_ID.toString()));//Activate initializePet()
     }
 
     public void initializePet(Pet pet){
         this.pet = pet;
-        //initializeAmountsOfEventsAndPetName();
-        restartPetEventCardAdapterToListView();
+        restartPetEventCardAdapterToListView();//Only after pet has been initialized
         petProfile_BTN_petName.setText(pet.getName());
         if(pet.getPetImageUrl() != null)
             ImageLoadingController.loadImageByUrlToImageView(this, petProfile_IMG_petImage, pet.getPetImageUrl());
@@ -142,13 +143,14 @@ public class PetProfileActivity extends AppCompatActivity {
     }
 
     private void restartPetEventCardAdapterToListView(){
-        eventCardAdapter = new EventCardAdapter();
+        eventCardAdapter = new EventCardAdapter().setCallBack_EventCardDelete(callBack_eventCardDelete);
         enumPetEventTypeFlag = EnumPetEventType.WALK;
         eventCardAdapter.setPetEventCardList(pet.getPetEventCardByType(EnumPetEventType.WALK));
         changeButtonPressedStyle();
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(eventCardAdapter);
     }
+
 
     public void setListContactsOfPet(){
         List<String> contacts = pet.getMyContactsUserName();
@@ -194,4 +196,14 @@ public class PetProfileActivity extends AppCompatActivity {
                 break;
         }
     }
+
+    CallBack_EventCardDelete callBack_eventCardDelete = new CallBack_EventCardDelete() {
+        @Override
+        public void clicked(int position) {
+            pet.deleteEventCard(enumPetEventTypeFlag,position);//Delete localy to refresh
+            Repository.getMe().deleteEventCardFromPet(PetProfileActivity.this, pet.getPetID(), enumPetEventTypeFlag, position);
+        }
+    };
+
+
 }

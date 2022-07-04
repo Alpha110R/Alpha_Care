@@ -8,11 +8,10 @@ import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.alpha_care.Activities.PetsListActivity;
 import com.example.alpha_care.AdaptersToRecycleView.PetCardAdapter;
 import com.example.alpha_care.Objects.Pet;
 import com.example.alpha_care.R;
-import com.example.alpha_care.Repository;
+import com.example.alpha_care.Model.Repository;
 
 import java.util.List;
 

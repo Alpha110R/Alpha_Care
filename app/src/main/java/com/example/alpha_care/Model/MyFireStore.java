@@ -1,4 +1,4 @@
-package com.example.alpha_care;
+package com.example.alpha_care.Model;
 
 import android.app.Activity;
 import android.util.Log;
@@ -11,7 +11,9 @@ import com.example.alpha_care.Activities.LogInActivity;
 import com.example.alpha_care.Activities.PetProfileActivity;
 import com.example.alpha_care.Activities.PetsListActivity;
 import com.example.alpha_care.Activities.SetUserNameActivity;
+import com.example.alpha_care.Enums.EnumPetEventType;
 import com.example.alpha_care.Objects.Pet;
+import com.example.alpha_care.Objects.PetEventCard;
 import com.example.alpha_care.Objects.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -97,6 +99,11 @@ public class MyFireStore {
                         if(activity instanceof PetProfileActivity){
                             ((PetProfileActivity) activity).initializePet(pet);
                         }
+                        else{
+                            if(activity instanceof AddContactToPetActivity){
+                                ((AddContactToPetActivity) activity).initializeCurrentPet(pet);
+                            }
+                        }
                     }
                 });
     }
@@ -166,7 +173,7 @@ public class MyFireStore {
      * @param petID
      * @param userName
      */
-    public void addContactToPet(String petID, String userName){
+    public void addContactToPet(Activity activity, String petID, String userName){
         petsByID.document(petID)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -181,6 +188,8 @@ public class MyFireStore {
                                 Log.d("tagg", "Contact added to pet");
                             }
                         });
+                        if(activity instanceof AddContactToPetActivity)
+                            ((AddContactToPetActivity)activity).moveToPageWithBundle(PetProfileActivity.class);
                     }
                 });
     }
@@ -286,6 +295,20 @@ public class MyFireStore {
                                  if(activity instanceof PetsListActivity){
                                      ((PetsListActivity)activity).deletePetSucceed();
                                  }
+                                 petsByID.document(petID)//Remove the user from the pet's contacts list
+                                         .get()
+                                         .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                             @Override
+                                             public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                 pet = documentSnapshot.toObject(Pet.class);
+                                                 assert pet != null;
+                                                 List<String> petContacts = pet.getMyContactsUserName();
+                                                 if(petContacts.contains(user.getUserName())) {
+                                                     petContacts.remove(user.getUserName());
+                                                     updatePetByNewEventCard(activity, pet);
+                                                 }
+                                             }
+                                         });
                              } else {
                                  Log.d("tagg", "No such document deletePetAtCurrentUser");
                              }
@@ -294,6 +317,27 @@ public class MyFireStore {
                          }
                      }
                  });
+    }
+
+    public void deleteEventCardFromPet(Activity activity, String petID, EnumPetEventType enumPetEventType, int position){
+        petsByID.document(petID)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        pet = documentSnapshot.toObject(Pet.class);
+                        assert pet != null;
+                        pet.deleteEventCard(enumPetEventType, position);
+                        petsByID.document(petID).set(pet).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Log.d("tagg", "eventCard deleted from pet");
+                            }
+                        });
+                        if(activity instanceof PetProfileActivity)
+                            ((PetProfileActivity)activity).notifyDataChangeRecycleView();
+                    }
+                });
     }
 
 }

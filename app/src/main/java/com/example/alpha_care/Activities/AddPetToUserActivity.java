@@ -14,7 +14,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.alpha_care.Enums.EnumFinals;
 import com.example.alpha_care.Objects.Pet;
 import com.example.alpha_care.R;
-import com.example.alpha_care.Repository;
+import com.example.alpha_care.Model.Repository;
+import com.example.alpha_care.Utils.FieldValidation;
+import com.example.alpha_care.Utils.MySignal.MessagesToUser;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -25,6 +27,7 @@ public class AddPetToUserActivity extends AppCompatActivity {
     private TextInputEditText addPetToUser_EDT_petAge, addPetToUser_EDT_petName;
     private ProgressBar addPetToUser_progress_bar;
     private Pet pet;
+    private String currentUserName;
     private static final int PICK_FROM_GALLERY = 1;
 
 
@@ -34,6 +37,7 @@ public class AddPetToUserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_addpettouser);
         intent = getIntent();
         bundle = intent.getBundleExtra(EnumFinals.BUNDLE.toString());
+        currentUserName = bundle.getString(EnumFinals.USER_NAME.toString());
         findViews();
         pet = new Pet();
 
@@ -55,11 +59,14 @@ public class AddPetToUserActivity extends AppCompatActivity {
         });
 
         addPetToUser_BTN_submit.setOnClickListener(view -> {
-            pet.setName(addPetToUser_EDT_petName.getText().toString());
-            pet.setAge(Integer.parseInt(addPetToUser_EDT_petAge.getText().toString()));
-            Repository.getMe().insertToDataBase(pet);
-            bundle.putString(EnumFinals.PET_ID.toString(), pet.getPetID());
-            moveToPageWithBundle(PetsListActivity.class);
+            if(checkFieldsValidation()) {
+                pet.setName(addPetToUser_EDT_petName.getText().toString());
+                pet.setAge(Integer.parseInt(addPetToUser_EDT_petAge.getText().toString()));
+                pet.addContactUserNameToList(currentUserName);
+                Repository.getMe().insertToDataBase(pet);
+                bundle.putString(EnumFinals.PET_ID.toString(), pet.getPetID());
+                moveToPageWithBundle(PetsListActivity.class);
+            }
         });
 
     }
@@ -119,6 +126,26 @@ public class AddPetToUserActivity extends AppCompatActivity {
     public void setSubmitButtonOn(){
         addPetToUser_BTN_submit.setClickable(true);
         addPetToUser_BTN_submit.setAlpha(1);
+    }
+
+    private boolean checkFieldsValidation(){
+        int age;
+        try{
+            age = Integer.parseInt(addPetToUser_EDT_petAge.getText().toString());
+        }catch (Exception e){
+            MessagesToUser.getMe().makeToastMessage("Age of pet must be integer");
+            return false;
+        }
+        if(!FieldValidation.isValidName(addPetToUser_EDT_petName.getText().toString())) {
+            MessagesToUser.getMe().makeToastMessage("Pet's name is not valid");
+            return false;
+        }else {
+            if(!FieldValidation.iaAgeValid(age)){
+                MessagesToUser.getMe().makeToastMessage("Pet's age needs to be in range 0-25");
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override

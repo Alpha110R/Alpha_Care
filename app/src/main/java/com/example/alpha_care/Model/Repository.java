@@ -1,12 +1,12 @@
-package com.example.alpha_care;
+package com.example.alpha_care.Model;
 
 import android.app.Activity;
 import android.net.Uri;
 import android.widget.ProgressBar;
 
+import com.example.alpha_care.Enums.EnumPetEventType;
 import com.example.alpha_care.Objects.Pet;
 import com.example.alpha_care.Objects.User;
-import com.example.alpha_care.Utils.MyFireStorage;
 
 import java.util.List;
 
@@ -68,8 +68,8 @@ public class Repository {
         }
     }
 
-    public void addContactToPet(String petID, String userName){
-        myFireStore.addContactToPet(petID, userName);
+    public void addContactToPet(Activity activity, String petID, String userName){
+        myFireStore.addContactToPet(activity, petID, userName);
     }
 
     public void updateContactUserToPet(Activity activity, String userID, String petID){
@@ -82,6 +82,10 @@ public class Repository {
 
     public void deletePetAtCurrentUser(Activity activity, String petID){
         myFireStore.deletePetAtCurrentUser(activity, petID);
+    }
+
+    public void deleteEventCardFromPet(Activity activity, String petID, EnumPetEventType enumPetEventType, int position){
+        myFireStore.deleteEventCardFromPet(activity, petID, enumPetEventType, position);
     }
 
 }

@@ -5,7 +5,7 @@ import java.util.Locale;
 import java.util.UUID;
 
 public class PetEventCard {
-    private Contact eventCardCreatorContact;
+    private String eventCardCreatorContact;
     private String dateExecution, petEventCardID;
 
     public PetEventCard(){
@@ -13,11 +13,11 @@ public class PetEventCard {
         this.petEventCardID = UUID.randomUUID().toString().replaceAll("-", "").toUpperCase();
     }
 
-    public Contact getEventCardCreatorContact() {
+    public String getEventCardCreatorContact() {
         return eventCardCreatorContact;
     }
 
-    public PetEventCard setEventCardCreatorContact(Contact eventCardCreatorContact) {
+    public PetEventCard setEventCardCreatorContact(String eventCardCreatorContact) {
         this.eventCardCreatorContact = eventCardCreatorContact;
         return this;
     }

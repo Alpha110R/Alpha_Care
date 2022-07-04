@@ -1,4 +1,4 @@
-package com.example.alpha_care.Utils;
+package com.example.alpha_care.Model;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -40,7 +40,7 @@ public class MyFireStorage {
         if (imageUri != null) {
             StorageReference fileReference = imagesRef.child(System.currentTimeMillis()
                     + "." + getFileExtension(imageUri, activity));
-
+            Toast.makeText(activity, "Wait, uploading image", Toast.LENGTH_LONG).show();
             fileReference.putFile(imageUri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -61,16 +61,17 @@ public class MyFireStorage {
                                 }
                             }, 500);
                             Toast.makeText(activity, "Upload successful", Toast.LENGTH_LONG).show();
-
                             if(activity instanceof AddPetToUserActivity){
                                 ((AddPetToUserActivity) activity).setSubmitButtonOn();// Only after the image has uploaded yhe user can submit
                             }
+
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             Toast.makeText(activity, e.getMessage(), Toast.LENGTH_SHORT).show();
+
                         }
                     })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -82,7 +83,11 @@ public class MyFireStorage {
                     });
         } else {
             Toast.makeText(activity, "No file selected", Toast.LENGTH_LONG).show();
+            if(activity instanceof AddPetToUserActivity){
+                ((AddPetToUserActivity) activity).setSubmitButtonOn();// Only after the image has uploaded yhe user can submit
+            }
         }
+
     }
     private String getFileExtension(Uri uri, Activity activity) {
         ContentResolver cR = activity.getContentResolver();

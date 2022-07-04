@@ -1,38 +1,5 @@
 package com.example.alpha_care.Activities;
 
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
-import android.widget.FrameLayout;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.alpha_care.CallBacks.CallBack_ContactPermission;
-import com.example.alpha_care.CallBacks.CallBack_HomePageToBaseAddPet;
-import com.example.alpha_care.CallBacks.CallBack_ReplaceFragment;
-import com.example.alpha_care.CallBacks.CallBack_getFromRepository;
-import com.example.alpha_care.Enums.EnumFinals;
-import com.example.alpha_care.Fragments.HomePageFragment;
-import com.example.alpha_care.Fragments.PetProfilePageFragment;
-import com.example.alpha_care.MyFireStore;
-import com.example.alpha_care.Objects.Pet;
-import com.example.alpha_care.Objects.User;
-import com.example.alpha_care.R;
-import com.example.alpha_care.Repository;
-import com.example.alpha_care.Utils.MySignal.MessagesToUser;
-import com.example.alpha_care.Utils.RequestContactReadPermission;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.gson.Gson;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 /*public class BasePage extends AppCompatActivity {
     private FrameLayout basePage_FRM_mainFrame;
     private BottomNavigationView basePage_bottom_navigation;
@@ -47,6 +14,7 @@ import java.util.Map;
     private User user;
 
 /*
+    private RequestContactReadPermission requestContactReadPermission;
 
 private static final int PERMISSION_REQUEST_CODE = 1;
     private Map<String, String> contacts;//<PhoneNumbers, names> RAW contacts

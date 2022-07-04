@@ -22,6 +22,18 @@
         android:gravity="center"
         android:orientation="vertical">
 
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:gravity="center"
+            android:text="Friends will be able to find you\nwith your user name"
+            android:textColor="#3A9E62"
+            android:textSize="28sp" />
+<Space
+    android:layout_width="0dp"
+    android:layout_height="35dp"/>
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="wrap_content"

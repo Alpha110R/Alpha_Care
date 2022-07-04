@@ -6,19 +6,16 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.alpha_care.CallBacks.CallBack_getFromRepository;
 import com.example.alpha_care.Enums.EnumFinals;
-import com.example.alpha_care.Objects.Pet;
 import com.example.alpha_care.Objects.User;
 import com.example.alpha_care.R;
-import com.example.alpha_care.Repository;
+import com.example.alpha_care.Model.Repository;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.gson.Gson;
 
 import java.util.Arrays;
 import java.util.List;

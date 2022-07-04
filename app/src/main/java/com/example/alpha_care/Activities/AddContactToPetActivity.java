@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,8 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.alpha_care.AdaptersToRecycleView.AddContactCardAdapter;
 import com.example.alpha_care.CallBacks.CallBack_UserNameContactCard;
 import com.example.alpha_care.Enums.EnumFinals;
+import com.example.alpha_care.Objects.Pet;
 import com.example.alpha_care.R;
-import com.example.alpha_care.Repository;
+import com.example.alpha_care.Model.Repository;
 import com.example.alpha_care.Utils.UserNameComparator;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -34,6 +34,8 @@ public class AddContactToPetActivity extends AppCompatActivity {
     private Intent intent;
     private Bundle bundle;
     private String petID, userID;
+    private Pet currentPet;
+    private List <String> currentContactInPet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,10 +44,10 @@ public class AddContactToPetActivity extends AppCompatActivity {
         findViews();
         userNameListFromDB = new ArrayList<>();
         userIDByUserNameMap = new HashMap<>();
-        Repository.getMe().getAllUserName(this);
         restartPetCardAdapter();
         initializeIntentBundle();
         petID = bundle.getString(EnumFinals.PET_ID.toString());
+        Repository.getMe().getPetByID(this, petID);
 
         addContactToPet_EDT_userName.addTextChangedListener(new TextWatcher() {
 
@@ -92,6 +94,16 @@ public class AddContactToPetActivity extends AppCompatActivity {
     }
 
     /**
+     * Called by the fireStore when it retrieve the current pet bt petID
+     * @param pet
+     */
+    public void initializeCurrentPet(Pet pet){
+        this.currentPet = pet;
+        currentContactInPet = pet.getMyContactsUserName();
+        Repository.getMe().getAllUserName(this);
+    }
+
+    /**
      * Function to find all the usenames that start with the input of search
      * @param search
      * @return
@@ -111,9 +123,11 @@ public class AddContactToPetActivity extends AppCompatActivity {
      */
     @SuppressLint("NotifyDataSetChanged")
     public void addUserNameToList(String userName, String userID){
-        userNameListFromDB.add(userName);
-        addContactCardAdapter.notifyDataSetChanged();
-        userIDByUserNameMap.put(userName, userID);
+        if(!currentContactInPet.contains(userName)) {//Checks if the userName is already exist in the contacts -> if exist it wont show this userName
+            userNameListFromDB.add(userName);
+            addContactCardAdapter.notifyDataSetChanged();
+            userIDByUserNameMap.put(userName, userID);
+        }
     }
 
 
@@ -122,14 +136,16 @@ public class AddContactToPetActivity extends AppCompatActivity {
         public void clicked(String userName) {//Need to add to the contacts list of the pet the user name
                                                 //+ To add to the user of this username the current petID
             userID = userIDByUserNameMap.get(userName);
-            Log.d("tagg", "clicked in add user. userID: " + userID + "\npetID: " + petID);
             Repository.getMe().updateContactUserToPet(AddContactToPetActivity.this, userID, petID);
-            Repository.getMe().addContactToPet(petID, userName);
-            moveToPageWithBundle(PetProfileActivity.class);
+            Repository.getMe().addContactToPet(AddContactToPetActivity.this, petID, userName);
         }
     };
 
-    private void moveToPageWithBundle(Class activity){
+    /**
+     * Will called with PetProfileActivity.Class by FireStore after DB will be updated
+     * @param activity
+     */
+    public void moveToPageWithBundle(Class activity){
         intent = new Intent(this, activity);
         intent.putExtra(EnumFinals.BUNDLE.toString(),bundle);
         startActivity(intent);

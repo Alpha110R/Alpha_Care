@@ -1,9 +1,7 @@
 package com.example.alpha_care.Activities;
 
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -22,15 +20,13 @@ import com.example.alpha_care.Enums.EnumFinals;
 import com.example.alpha_care.Objects.Pet;
 import com.example.alpha_care.Objects.User;
 import com.example.alpha_care.R;
-import com.example.alpha_care.Repository;
+import com.example.alpha_care.Model.Repository;
 import com.example.alpha_care.Utils.MySignal.MessagesToUser;
 import com.example.alpha_care.Utils.RequestContactReadPermission;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class PetsListActivity extends AppCompatActivity {
 
@@ -41,7 +37,7 @@ public class PetsListActivity extends AppCompatActivity {
     private Bundle bundle;
     private User currentUser;
     private List<Pet> petList;
-    private RequestContactReadPermission requestContactReadPermission;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +56,11 @@ public class PetsListActivity extends AppCompatActivity {
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
         PetsListActivity_FAB_addPet.setOnClickListener(view -> {
+            bundle.putString(EnumFinals.USER_NAME.toString(), currentUser.getUserName());
             moveToPageWithBundle(AddPetToUserActivity.class);
         });
+
+
 
     }
 

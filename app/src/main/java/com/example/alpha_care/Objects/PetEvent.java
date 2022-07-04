@@ -47,6 +47,10 @@ public class PetEvent {
         return this;
     }
 
+    public void deleteEventCardFromList(int position){
+        petEventCardList.remove(position);
+    }
+
     public void addEventCard(PetEventCard petEventCard){
         petEventCardList.add(petEventCard);
     }

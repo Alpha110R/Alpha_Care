@@ -1,13 +1,12 @@
 package com.example.alpha_care.Activities;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.alpha_care.Enums.EnumFinals;
 import com.example.alpha_care.Objects.User;
 import com.example.alpha_care.R;
-import com.example.alpha_care.Repository;
+import com.example.alpha_care.Model.Repository;
 import com.example.alpha_care.Utils.MySignal.MessagesToUser;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
